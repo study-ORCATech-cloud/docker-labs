@@ -15,10 +15,10 @@ This directory contains labs focused on fundamental Docker concepts for beginner
 
 - **LAB01-GettingStarted**: Installation, basic commands, and running containers
 - **LAB02-BuildingImages**: Building custom Docker images with Dockerfiles
+- **LAB03-Volumes**: Working with Docker volumes for data persistence and sharing data between containers and the host system
 
 ## Future Labs (Planned)
 
-- **LAB03-Volumes**: Working with Docker volumes for data persistence
 - **LAB04-Layers**: Understanding Docker image layers and optimization
 - **LAB05-Debugging**: Troubleshooting and debugging containers
 
