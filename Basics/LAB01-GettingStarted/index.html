@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Lab - Getting Started (Python)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #0db7ed;
+            text-align: center;
+        }
+
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #e6f7ff;
+            border-left: 4px solid #0db7ed;
+            padding: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Docker Getting Started Lab</h1>
+    <div class="container">
+        <div class="success">
+            <h2>🐳 Congratulations!</h2>
+            <p>If you're seeing this page, you've successfully:</p>
+            <ul>
+                <li>Built a Python-based Docker image</li>
+                <li>Started a container</li>
+                <li>Mapped port 8080 to container port 80</li>
+            </ul>
+        </div>
+
+        <h3>Container Information:</h3>
+        <pre id="container-info">Loading...</pre>
+
+        <h3>Next Steps:</h3>
+        <p>Try these commands to continue learning:</p>
+        <ul>
+            <li><code>docker ps</code> - See your running container</li>
+            <li><code>docker logs [container-id]</code> - View logs</li>
+            <li><code>docker exec -it [container-id] bash</code> - Access the container shell</li>
+            <li><code>docker stop [container-id]</code> - Stop the container</li>
+        </ul>
+    </div>
+
+    <script>
+        // Display hostname and container ID
+        fetch('/container-info')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('container-info').textContent = data;
+            })
+            .catch(error => {
+                document.getElementById('container-info').textContent =
+                    'Could not fetch container info. This might be running on a static server.';
+            });
+    </script>
+</body>
+
+</html>

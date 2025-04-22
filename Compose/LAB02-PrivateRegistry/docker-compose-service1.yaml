@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  nexus:
+    image: localhost:8082/service1:1.0
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+
+#  docker-compose -f docker-compose-service1.yaml -p service1 up

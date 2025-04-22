@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  service1:
+    build:
+      context: ./service1
+      dockerfile: Dockerfile  # Default name, but explicitly stated
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - SERVICE2_NAME=hibye
+    depends_on:
+      - hibye
+
+  hibye:
+    build:
+      context: ./service2
+      dockerfile: chokomoko  # Custom Dockerfile name
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+
+# docker-compose up --build
