@@ -87,7 +87,7 @@ docker run --rm -v [VOLUME_NAME]:/source -v $(pwd):/backup alpine tar -czvf /bac
 docker run --rm -v [VOLUME_NAME]:/target -v $(pwd):/backup alpine sh -c "tar -xzvf /backup/backup.tar.gz -C /target"
 ```
 
-## Final Cleanup
+## Cleanup
 
 When you're completely finished with all exercises, you can clean up all resources with:
 

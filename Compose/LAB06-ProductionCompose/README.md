@@ -120,7 +120,7 @@ logging:
 
 In this example, we'll deploy a Python Flask application with Redis in a production-ready configuration.
 
-## Clean Up
+## Cleanup
 
 To clean up resources after completing the lab:
 

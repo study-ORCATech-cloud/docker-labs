@@ -292,7 +292,7 @@ Then run the autoscaling script:
 python autoscale.py
 ```
 
-## Clean Up
+## Cleanup
 
 To stop and remove all containers, networks, and volumes created by Docker Compose:
 

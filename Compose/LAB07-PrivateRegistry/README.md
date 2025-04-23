@@ -292,7 +292,7 @@ Private Docker registries like Nexus provide many benefits in production environ
 
 ---
 
-## **Cleaning Up**
+## Cleanup
 
 When you're done with the lab, you can clean up with:
 

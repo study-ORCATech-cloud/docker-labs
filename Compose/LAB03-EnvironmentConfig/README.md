@@ -91,7 +91,7 @@ docker-compose exec app env
 docker-compose run -e DEBUG=true app
 ```
 
-## Final Cleanup
+## Cleanup
 
 When you're completely finished with all exercises, you can clean up all resources with:
 

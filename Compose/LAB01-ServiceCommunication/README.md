@@ -219,7 +219,7 @@ In production environments, service communication patterns like these are essent
 
 ---
 
-## Clean Up
+## Cleanup
 
 When you're done with the lab, stop the running containers:
 
