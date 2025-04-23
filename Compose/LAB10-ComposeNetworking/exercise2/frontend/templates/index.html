@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Multi-Tier Network Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        .info-box {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .good {
+            color: green;
+        }
+
+        .bad {
+            color: red;
+        }
+
+        .data-item {
+            background-color: #e6f7ff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Multi-Tier Application Network Demo</h1>
+
+        <div class="info-box">
+            <div class="info-title">Frontend Container Information</div>
+            <table>
+                <tr>
+                    <th>Container Hostname:</th>
+                    <td>{{ hostname }}</td>
+                </tr>
+                <tr>
+                    <th>Container IP:</th>
+                    <td>{{ container_ip }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Backend Connection</div>
+            <table>
+                <tr>
+                    <th>Backend Hostname:</th>
+                    <td>{{ backend_host }}</td>
+                </tr>
+                <tr>
+                    <th>Backend IP (resolved):</th>
+                    <td>{{ backend_ip }}</td>
+                </tr>
+                <tr>
+                    <th>Connection Status:</th>
+                    <td {% if backend_status.startswith('Connected') %}class="good" {% else %}class="bad" {% endif %}>
+                        {{ backend_status }}
+                    </td>
+                </tr>
+            </table>
+
+            <h3>Data from Backend:</h3>
+            {% if backend_data %}
+            {% for item in backend_data %}
+            <div class="data-item">{{ item }}</div>
+            {% endfor %}
+            {% else %}
+            <p>No data available from backend.</p>
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Database Connection (should fail due to network isolation)</div>
+            <table>
+                <tr>
+                    <th>Database Hostname Resolution:</th>
+                    <td {% if db_status.startswith('DNS resolution failed') %}class="good" {% else %}class="bad" {%
+                        endif %}>
+                        {{ db_status }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Database IP (if resolved):</th>
+                    <td>{{ db_ip }}</td>
+                </tr>
+            </table>
+            <p>
+                <strong>Note:</strong> The frontend should NOT be able to connect directly to the database
+                due to network isolation. The frontend can only connect to the backend,
+                and the backend connects to the database.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Network Isolation Explanation</div>
+            <p>
+                This demonstrates network segmentation with Docker Compose:
+            </p>
+            <ul>
+                <li>The frontend can only access the backend</li>
+                <li>The frontend cannot access the database directly</li>
+                <li>The backend can access both the frontend and the database</li>
+            </ul>
+            <p>
+                This is achieved by creating separate networks for each tier and
+                connecting services only to their required networks.
+            </p>
+            <p>
+                <a href="/network-info" target="_blank">View detailed network information (JSON)</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

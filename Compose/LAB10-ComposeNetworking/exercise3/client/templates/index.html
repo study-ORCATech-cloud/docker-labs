@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Advanced Service Discovery Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+        }
+
+        .info-box {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+
+        .response {
+            background-color: #e6f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: auto;
+        }
+
+        .response pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .history-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .success {
+            background-color: #e6ffed;
+            border-left: 3px solid #28a745;
+        }
+
+        .error {
+            background-color: #ffebe6;
+            border-left: 3px solid #dc3545;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0052a3;
+        }
+
+        .time {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .instance {
+            font-weight: bold;
+            color: #0066cc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Advanced Service Discovery Demo</h1>
+
+        <div class="info-box">
+            <div class="info-title">Service Discovery with Network Aliases</div>
+            <p>
+                This demo shows how Docker's DNS service discovery works with network aliases.
+                We have multiple API instances that can be accessed using both their service name
+                and a network alias.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">DNS Resolution Information</div>
+            <table>
+                <tr>
+                    <th>Hostname</th>
+                    <th>Resolution Status</th>
+                    <th>IP Address</th>
+                </tr>
+                {% for hostname, info in hostname_info.items() %}
+                <tr>
+                    <td>{{ hostname }}</td>
+                    <td>{{ "Resolved" if info.resolved else "Failed" }}</td>
+                    <td>{{ info.ip if info.resolved else info.error }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">API Response using Primary Hostname ({{ primary_result.target }})</div>
+            {% if primary_result.status == "success" %}
+            <div class="response">
+                <div>Response Time: {{ primary_result.response_time }} ms</div>
+                <div>API Instance: <span class="instance">{{ primary_result.data.instance_id }}</span></div>
+                <div>Hostname: {{ primary_result.data.hostname }}</div>
+                <div>IP Address: {{ primary_result.data.ip }}</div>
+                <pre>{{ primary_result.data | tojson(indent=2) }}</pre>
+            </div>
+            {% else %}
+            <div class="response error">
+                <div>Error: {{ primary_result.error }}</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">API Response using Alias ({{ alias_result.target }})</div>
+            {% if alias_result.status == "success" %}
+            <div class="response">
+                <div>Response Time: {{ alias_result.response_time }} ms</div>
+                <div>API Instance: <span class="instance">{{ alias_result.data.instance_id }}</span></div>
+                <div>Hostname: {{ alias_result.data.hostname }}</div>
+                <div>IP Address: {{ alias_result.data.ip }}</div>
+                <pre>{{ alias_result.data | tojson(indent=2) }}</pre>
+            </div>
+            {% else %}
+            <div class="response error">
+                <div>Error: {{ alias_result.error }}</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Actions</div>
+            <a href="/" class="btn">Make New Request</a>
+            <a href="/multi-request" target="_blank" class="btn">Make Multiple Requests (JSON)</a>
+            <a href="/api-request/api/time" target="_blank" class="btn">Get Time from API</a>
+            <a href="/api-request/api-service/time" target="_blank" class="btn">Get Time from API via Alias</a>
+            <a href="/dns-lookup/api" target="_blank" class="btn">DNS Lookup: api</a>
+            <a href="/dns-lookup/api-service" target="_blank" class="btn">DNS Lookup: api-service</a>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Request History</div>
+            {% for item in history %}
+            <div class="history-item {{ 'success' if item.status == 'success' else 'error' }}">
+                <div>
+                    <strong>{{ item.target }}{{ item.endpoint }}</strong>
+                    {% if item.status == "success" %}
+                    - Instance: <span class="instance">{{ item.data.instance_id }}</span>
+                    {% else %}
+                    - Error: {{ item.error }}
+                    {% endif %}
+                </div>
+                <div class="time">{{ item.time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Load Balancing Explanation</div>
+            <p>
+                When multiple containers share the same service name or network alias,
+                Docker's built-in DNS rounds between them in a round-robin fashion.
+                This creates a basic form of load balancing across the instances.
+            </p>
+            <p>
+                Try refreshing the page multiple times to see different API instances
+                responding to your requests.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Docker Compose Networking Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .counter {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #e6f7ff;
+            border-radius: 5px;
+        }
+
+        .info-box {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Docker Compose Networking Demo</h1>
+
+        <div class="counter">
+            Visit Counter: <span id="counter">{{ counter }}</span>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Container Network Information</div>
+            <table>
+                <tr>
+                    <th>Container Hostname:</th>
+                    <td>{{ hostname }}</td>
+                </tr>
+                <tr>
+                    <th>Container IP:</th>
+                    <td>{{ container_ip }}</td>
+                </tr>
+                <tr>
+                    <th>Redis Hostname:</th>
+                    <td>{{ redis_host }}</td>
+                </tr>
+                <tr>
+                    <th>Redis IP (resolved):</th>
+                    <td>{{ redis_ip }}</td>
+                </tr>
+            </table>
+            <p>
+                This demonstrates how Docker's built-in DNS resolves service names to IP addresses.
+                The web service can connect to Redis using just the service name defined in docker-compose.yml.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Service Discovery Explanation</div>
+            <p>
+                Docker Compose automatically creates a default network for services defined in a docker-compose.yml
+                file.
+                Each container connects to this network and can communicate with other containers using their service
+                names.
+            </p>
+            <p>
+                For example, this web app connects to Redis using the hostname 'redis', which Docker's DNS resolver
+                automatically converts to the IP address of the Redis container.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Network Details</div>
+            <p>
+                <a href="/network-info" target="_blank">View detailed network information (JSON)</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

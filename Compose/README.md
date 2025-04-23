@@ -21,12 +21,10 @@ This directory contains hands-on labs focused on using Docker Compose for multi-
 - **LAB05-ScalingServices**: Load balancing and scaling applications
 - **LAB06-ProductionCompose**: Production-ready Docker Compose configurations with security, resource management, and multi-environment setup
 - **LAB07-PrivateRegistry**: Setting up a private Docker registry using Nexus to store and manage Docker images
-
-## Future Labs (Planned)
-
 - **LAB08-MonitoringLogging**: Setting up monitoring and logging for Docker Compose applications
 - **LAB09-MultiStageBuilds**: Optimizing images with multi-stage builds in Compose
 - **LAB10-ComposeNetworking**: Advanced networking configurations in Docker Compose
+
 
 ## Prerequisites
 

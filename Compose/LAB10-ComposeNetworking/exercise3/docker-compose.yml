@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # Client service that connects to API
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: service-discovery-client
+    ports:
+      - "8000:8000"
+    environment:
+      - API_HOST=api
+      - API_ALIAS=api-service
+      - API_PORT=8000
+    volumes:
+      - ./client:/app
+    depends_on:
+      - api-1
+      - api-2
+      - api-3
+    networks:
+      - app-network
+
+  # API Service Instance 1
+  api-1:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: service-discovery-api
+    environment:
+      - INSTANCE_ID=001
+    volumes:
+      - ./api:/app
+    networks:
+      app-network:
+        aliases:
+          - api
+          - api-service
+    # No port expose to host - only accessible within the network
+
+    # API Service Instance 2
+  api-2:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: service-discovery-api
+    environment:
+      - INSTANCE_ID=002
+    volumes:
+      - ./api:/app
+    networks:
+      app-network:
+        aliases:
+          - api
+          - api-service
+    # No port expose to host - only accessible within the network
+
+    # API Service Instance 3
+  api-3:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: service-discovery-api
+    environment:
+      - INSTANCE_ID=003
+    volumes:
+      - ./api:/app
+    networks:
+      app-network:
+        aliases:
+          - api
+          - api-service
+    # No port expose to host - only accessible within the network
+
+networks:
+  app-network:
+    driver: bridge

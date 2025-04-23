@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    image: networking-demo-web
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./app:/app
+    depends_on:
+      - redis
+    # Initially, no custom network is defined
+    # Services use the default network created by Compose
+
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+
+    # Networks section is commented out initially
+    # Uncomment and modify for custom network configuration
+    #
+    # networks:
+    #   app-network:
+    #     driver: bridge 

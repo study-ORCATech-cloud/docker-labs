@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # API Gateway - only service exposed to the outside world
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    image: microservices-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - USERS_SERVICE_HOST=users-service
+      - USERS_SERVICE_PORT=8000
+      - PRODUCTS_SERVICE_HOST=products-service
+      - PRODUCTS_SERVICE_PORT=8000
+    volumes:
+      - ./gateway:/app
+    networks:
+      - gateway-network
+    depends_on:
+      - users-service
+      - products-service
+
+  # Users Service - only accessible through the gateway
+  users-service:
+    build:
+      context: ./users-service
+      dockerfile: Dockerfile
+    image: microservices-users-service
+    environment:
+      - MONGO_HOST=db-service
+      - MONGO_PORT=27017
+      - MONGO_DB=microservices
+    volumes:
+      - ./users-service:/app
+    networks:
+      - gateway-network
+      - service-network
+      - db-network
+    depends_on:
+      - db-service
+
+  # Products Service - only accessible through the gateway
+  products-service:
+    build:
+      context: ./products-service
+      dockerfile: Dockerfile
+    image: microservices-products-service
+    environment:
+      - MONGO_HOST=db-service
+      - MONGO_PORT=27017
+      - MONGO_DB=microservices
+    volumes:
+      - ./products-service:/app
+    networks:
+      - gateway-network
+      - service-network
+      - db-network
+    depends_on:
+      - db-service
+
+  # Database Service - only accessible by the service layer
+  db-service:
+    image: mongo:5.0
+    volumes:
+      - mongo-data:/data/db
+      - ./db-service/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - db-network
+    # No ports exposed to host - only accessible by services
+
+    # Define isolated network segments
+networks:
+  # Gateway network - connects the gateway to services
+  gateway-network:
+    driver: bridge
+
+  # Service network - allows services to communicate with each other
+  service-network:
+    driver: bridge
+
+  # DB network - isolates database access to services only
+  db-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
