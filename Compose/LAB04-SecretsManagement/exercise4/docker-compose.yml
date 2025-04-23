@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Application with custom secrets management
+  secure-app:
+    build: .
+    container_name: secrets-secure-app
+    ports:
+      - "8004:8000"
+    environment:
+      - APP_NAME=Secure Secrets Manager Demo
+      - APP_ENV=production
+      - SECRETS_DIR=/app/secrets
+    volumes:
+      - ./secrets:/app/secrets:ro # Read-only mount for encrypted secrets
+    networks:
+      - secrets-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    command: [ "python", "secrets_manager.py", "--run", "app.py" ]
+
+networks:
+  secrets-net:
+    driver: bridge

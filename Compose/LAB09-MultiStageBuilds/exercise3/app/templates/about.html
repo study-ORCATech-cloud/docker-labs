@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Multi-Stage Builds Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>About Multi-Stage Builds</h1>
+        <p>Exercise 3: Production-Grade Python Application</p>
+    </header>
+
+    <main>
+        <section class="container">
+            <h2>What are Multi-Stage Builds?</h2>
+            <p>Multi-stage builds are a feature in Docker that allow you to use multiple FROM statements in your
+                Dockerfile. Each FROM statement begins a new stage of the build.</p>
+            <p>Key benefits include:</p>
+            <ul>
+                <li>Smaller final image size</li>
+                <li>Separation of build-time and runtime dependencies</li>
+                <li>Improved security by not including build tools in the final image</li>
+                <li>Better organization of the build process</li>
+            </ul>
+            <a href="/" class="button">Back Home</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Docker Multi-Stage Builds Lab</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Stage Builds Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #fff;
+        }
+
+        .item-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #2a9d8f;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Multi-Stage Builds Demo</h1>
+        <p>Exercise 4: Real-World Microservices Application</p>
+    </header>
+
+    <main>
+        <h2>Items from API Service</h2>
+
+        {% if items %}
+        <div class="items-container">
+            {% for item in items %}
+            <div class="item-card">
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.description }}</p>
+                <p class="price">${{ item.price }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No items available from the API.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>Docker Multi-Stage Builds Demo | Web Service</p>
+    </footer>
+
+    <script>
+        // Simple script to check API status
+        fetch('/api/status')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Status:', data);
+            })
+            .catch(error => {
+                console.error('Error checking API status:', error);
+            });
+    </script>
+</body>
+
+</html>

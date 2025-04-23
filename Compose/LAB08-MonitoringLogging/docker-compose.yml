@@ -1,0 +1,162 @@
+version: '3.8'
+
+# Main docker-compose file for LAB08-MonitoringLogging
+# This file orchestrates the monitoring and logging services for all exercises
+
+services:
+  # Exercise 1: Basic Monitoring Demo
+  exercise1-app:
+    build: ./exercise1/app
+    container_name: monitoring-demo-app-1
+    ports:
+      - "8081:8080"
+    networks:
+      - monitoring-net
+
+  # Exercise 2: Advanced Application Monitoring
+  exercise2-app:
+    build: ./exercise2/app
+    container_name: monitoring-demo-app-2
+    ports:
+      - "8082:8080"
+    networks:
+      - monitoring-net
+
+  # Exercise 3: Centralized Logging Demo
+  exercise3-app:
+    build: ./exercise3/app
+    container_name: logging-demo-app
+    ports:
+      - "8083:8080"
+    networks:
+      - monitoring-net
+
+  # Exercise 4: Complete Observability Demo
+  exercise4-app:
+    build: ./exercise4/app
+    container_name: observability-demo-app
+    ports:
+      - "8084:8080"
+    networks:
+      - monitoring-net
+
+  # Prometheus - Metrics Storage and Query Engine
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring-net
+
+  # Grafana - Visualization Platform
+  grafana:
+    image: grafana/grafana:10.0.3
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana:/etc/grafana
+    networks:
+      - monitoring-net
+    depends_on:
+      - prometheus
+
+  # Elasticsearch - Log Storage and Search
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - monitoring-net
+
+  # Logstash - Log Processing Pipeline
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.9
+    container_name: logstash
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    networks:
+      - monitoring-net
+    depends_on:
+      - elasticsearch
+
+  # Kibana - Log Visualization
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.9
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - monitoring-net
+    depends_on:
+      - elasticsearch
+
+  # Node Exporter - Host Metrics
+  node-exporter:
+    image: prom/node-exporter:v1.6.1
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - monitoring-net
+
+  # cAdvisor - Container Metrics
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.1
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - monitoring-net
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+
+networks:
+  monitoring-net:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  elasticsearch_data:

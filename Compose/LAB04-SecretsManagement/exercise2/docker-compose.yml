@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  file-secrets-app:
+    build: .
+    container_name: secrets-file-based-standalone
+    ports:
+      - "8002:8000"
+    environment:
+      - APP_NAME=File-Based Secrets Demo
+    volumes:
+      - ./secrets:/run/secrets:ro # Read-only mount for secrets
+    command: [ "python", "app.py" ]

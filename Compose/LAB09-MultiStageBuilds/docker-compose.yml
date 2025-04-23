@@ -1,0 +1,130 @@
+version: '3.8'
+
+# Main docker-compose file for LAB09-MultiStageBuilds
+# This file orchestrates all exercises as separate services
+
+services:
+  # Exercise 1: Basic Multi-Stage Builds
+  exercise1-app:
+    build:
+      context: ./exercise1
+      dockerfile: Dockerfile
+    container_name: multistage-ex1-app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=demo
+    networks:
+      - multistage-net
+
+  exercise1-app-original:
+    build:
+      context: ./exercise1
+      dockerfile: Dockerfile.original
+    container_name: multistage-ex1-app-original
+    ports:
+      - "8001:8000"
+    environment:
+      - APP_ENV=demo
+    networks:
+      - multistage-net
+
+  # Exercise 2: Advanced Dependency Management
+  exercise2-app:
+    build:
+      context: ./exercise2
+      dockerfile: Dockerfile
+      args:
+        - BUILD_ENV=development
+    container_name: multistage-ex2-app
+    ports:
+      - "8010:8000"
+    environment:
+      - APP_ENV=development
+    networks:
+      - multistage-net
+
+  # Exercise 3: Production-Grade Python Application
+  exercise3-app-dev:
+    build:
+      context: ./exercise3
+      dockerfile: Dockerfile
+      target: development
+    container_name: multistage-ex3-app-dev
+    ports:
+      - "8020:8000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    volumes:
+      - ./exercise3/app:/app
+    networks:
+      - multistage-net
+
+  exercise3-app-prod:
+    build:
+      context: ./exercise3
+      dockerfile: Dockerfile
+      target: production
+    container_name: multistage-ex3-app-prod
+    ports:
+      - "8021:8000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+    networks:
+      - multistage-net
+
+  # Exercise 4: Real-World Microservices Application
+  exercise4-web:
+    build:
+      context: ./exercise4/web-service
+      dockerfile: Dockerfile
+      target: development
+    container_name: multistage-ex4-web
+    ports:
+      - "8030:8000"
+    environment:
+      - API_URL=http://exercise4-api:5000
+    depends_on:
+      - exercise4-api
+    networks:
+      - multistage-net
+
+  exercise4-api:
+    build:
+      context: ./exercise4/api-service
+      dockerfile: Dockerfile
+      target: development
+    container_name: multistage-ex4-api
+    ports:
+      - "8031:5000"
+    environment:
+      - DB_HOST=exercise4-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=appdb
+    depends_on:
+      - exercise4-db
+    networks:
+      - multistage-net
+
+  exercise4-db:
+    image: postgres:14-alpine
+    container_name: multistage-ex4-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=appdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - multistage-net
+
+networks:
+  multistage-net:
+    driver: bridge
+
+volumes:
+  postgres_data:

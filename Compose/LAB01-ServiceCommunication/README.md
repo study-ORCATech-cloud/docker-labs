@@ -75,7 +75,7 @@ The default `docker-compose.yaml` defines:
    From the `LAB01-ServiceCommunication` directory, run:
 
    ```sh
-   docker compose up --build
+   docker-compose up --build
    ```
 
    This command will:
@@ -88,7 +88,7 @@ The default `docker-compose.yaml` defines:
    Check that both services are running:
 
    ```sh
-   docker compose ps
+   docker-compose ps
    ```
 
    You should see both services in the "Up" state.
@@ -141,13 +141,13 @@ Now, let's see what happens when services are on separate networks and cannot co
    Use the provided `docker-compose-isolated.yaml`:
 
    ```sh
-   docker compose -f docker-compose-isolated.yaml up --build
+   docker-compose -f docker-compose-isolated.yaml up --build
    ```
 
 2. **Verify Services are Running**
 
    ```sh
-   docker compose -f docker-compose-isolated.yaml ps
+   docker-compose -f docker-compose-isolated.yaml ps
    ```
 
 3. **Test Inter-Service Communication (Expected to Fail)**
@@ -225,10 +225,10 @@ When you're done with the lab, stop the running containers:
 
 ```sh
 # For the default configuration
-docker compose down
+docker-compose down
 
 # For the isolated networks configuration
-docker compose -f docker-compose-isolated.yaml down
+docker-compose -f docker-compose-isolated.yaml down
 ```
 
 To remove all created networks:
@@ -242,9 +242,9 @@ docker network prune
 ## Troubleshooting
 
 ### Cannot Access Services
-- Check if the containers are running with `docker compose ps`
-- Verify that the ports are correctly mapped with `docker compose port service1 5000`
-- Check container logs with `docker compose logs`
+- Check if the containers are running with `docker-compose ps`
+- Verify that the ports are correctly mapped with `docker-compose port service1 5000`
+- Check container logs with `docker-compose logs`
 
 ### Services Cannot Communicate
 - Verify they are on the same network with `docker network inspect`
@@ -254,4 +254,4 @@ docker network prune
 ### Container Exits Immediately
 - Check for errors in the application code
 - Verify the `CMD` or `ENTRYPOINT` in the Dockerfile
-- Inspect logs with `docker compose logs service1` 
+- Inspect logs with `docker-compose logs service1` 

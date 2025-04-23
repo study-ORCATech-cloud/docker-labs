@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Development environment with all development tools
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: multistage-ex2-app-dev
+    ports:
+      - "8010:8000"
+    environment:
+      - APP_ENV=development
+      - BUILD_ENV=development
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # Production environment with optimized settings
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: multistage-ex2-app-prod
+    ports:
+      - "8011:8000"
+    environment:
+      - APP_ENV=production
+      - BUILD_ENV=production
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+networks:
+  app-network:
+    driver: bridge

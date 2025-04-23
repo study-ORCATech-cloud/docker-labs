@@ -1,0 +1,53 @@
+version: '3.8'
+
+# Main docker-compose file for LAB04-SecretsManagement
+# This file orchestrates all four exercises as separate services
+
+services:
+  # Exercise 1: Demonstrates insecure secrets handling
+  insecure-app:
+    build: ./exercise1
+    container_name: secrets-insecure
+    ports:
+      - "8001:8000"
+    environment:
+      - APP_NAME=Insecure Secrets Demo
+      - DB_USER=admin
+      - DB_PASSWORD=insecure_password_123
+      - API_KEY=1234567890abcdef
+      - DEBUG=true
+    networks:
+      - secrets-net
+
+  # Exercise 2: Implements file-based secrets
+  file-secrets-app:
+    build: ./exercise2
+    container_name: secrets-file-based
+    ports:
+      - "8002:8000"
+    environment:
+      - APP_NAME=File-Based Secrets Demo
+    volumes:
+      - ./exercise2/secrets:/run/secrets:ro
+    networks:
+      - secrets-net
+
+  # Exercise 4: Implements secure alternatives for Compose
+  # (Exercise 3 uses Swarm mode and needs to be run separately)
+  secure-app:
+    build: ./exercise4
+    container_name: secrets-secure
+    ports:
+      - "8004:8000"
+    environment:
+      - APP_NAME=Secure Secrets Demo
+      - APP_ENV=production
+    volumes:
+      - ./exercise4/secrets:/app/secrets:ro
+    networks:
+      - secrets-net
+    command: [ "python", "-m", "secrets-manager", "--run", "app.py" ]
+
+networks:
+  secrets-net:
+    driver: bridge

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Multi-stage build version
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: multistage-app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=demo
+      - FLASK_DEBUG=1
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # Original single-stage build version
+  app-original:
+    build:
+      context: .
+      dockerfile: Dockerfile.original
+    container_name: standard-app
+    ports:
+      - "8001:8000"
+    environment:
+      - APP_ENV=demo
+      - FLASK_DEBUG=1
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+networks:
+  app-network:
+    driver: bridge
