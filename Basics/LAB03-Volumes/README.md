@@ -10,7 +10,6 @@ In this lab, you will:
 - Share data between host and containers
 - Mount host directories into containers (bind mounts)
 - Manage volume lifecycle (create, list, remove)
-- Use volumes in Docker Compose
 
 ## Learning Objectives
 
@@ -18,7 +17,6 @@ In this lab, you will:
 - Understand when to use bind mounts vs. named volumes vs. tmpfs
 - Practice mounting host directories for development
 - Manage Docker volumes from the CLI
-- Use Docker Compose to define and mount volumes
 
 ## Prerequisites
 
@@ -171,34 +169,12 @@ curl -X POST -H "Content-Type: application/json" \
 curl http://localhost:5000/read
 ```
 
-### Task 5: Use Docker Compose
-
-Create `docker-compose.yaml`:
-```yaml
-version: '3'
-services:
-  app:
-    build: .
-    ports:
-      - "5000:5000"
-    volumes:
-      - demo-data:/app/data
-
-volumes:
-  demo-data:
-```
-
-Run with Compose:
-```bash
-docker compose up --build
-```
 
 Test write/read endpoints as above.
 
 ## Clean Up
 
 ```bash
-docker compose down -v
 docker rm -f volume-demo-app
 docker volume rm demo-data
 ```

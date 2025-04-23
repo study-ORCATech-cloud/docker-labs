@@ -1,0 +1,33 @@
+FROM python:3.9-slim
+
+# Fixed: Proper working directory
+WORKDIR /app
+
+# Fixed: Install curl for healthcheck
+RUN apt-get update && apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Fixed: Install all dependencies in one layer
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Fixed: Create log directory
+RUN mkdir -p /app/logs && chmod 777 /app/logs
+
+# Fixed: Set required environment variables
+ENV PYTHONUNBUFFERED=1 \
+    API_KEY=demo-key \
+    FLASK_APP=app.py
+
+# Fixed: Copy application files correctly
+COPY app.py .
+
+# Fixed: Expose correct port
+EXPOSE 5000
+
+# Fixed: Add healthcheck
+HEALTHCHECK --interval=5s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:5000/health || exit 1
+
+# Fixed: Use absolute path in command
+CMD ["python", "/app/app.py"] 
