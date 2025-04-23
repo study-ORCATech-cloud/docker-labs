@@ -1,4 +1,4 @@
-# LAB02: Private Registry with Nexus
+# LAB07: Private Registry with Nexus
 
 This lab guides you through setting up a private Docker registry using Sonatype Nexus, building a simple Flask application, and pushing/pulling Docker images from your private registry.
 

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./app
+    image: lab06-web:latest
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  redis:
+    image: redis:6.2-alpine
+    networks:
+      - app-network
+    volumes:
+      - redis-data:/data
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-data:

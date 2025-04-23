@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Docker Compose Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .env-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .env-development {
+            background-color: #17a2b8;
+        }
+
+        .env-staging {
+            background-color: #ffc107;
+        }
+
+        .env-production {
+            background-color: #28a745;
+        }
+
+        .counter {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Production Docker Compose Demo</h1>
+        <div class="env-badge env-{{ environment }}">{{ environment }}</div>
+    </div>
+
+    <div class="container">
+        <h2>Container Information</h2>
+        <p><strong>Hostname:</strong> {{ hostname }}</p>
+        <p><strong>Page Views:</strong> <span class="counter">{{ counter }}</span></p>
+        <p><strong>Environment:</strong> {{ environment }}</p>
+    </div>
+
+    <div class="container">
+        <h2>Production-Ready Features</h2>
+        <ul>
+            <li>Resource Limits</li>
+            <li>Health Checks</li>
+            <li>Proper Logging</li>
+            <li>Environment Separation</li>
+            <li>Security Hardening</li>
+            <li>Persistent Data</li>
+        </ul>
+        <p>Check out <a href="/health">/health</a> and <a href="/metrics">/metrics</a> endpoints!</p>
+    </div>
+
+    <div class="footer">
+        <p>Docker Compose LAB06 - Production Configurations</p>
+    </div>
+</body>
+
+</html>

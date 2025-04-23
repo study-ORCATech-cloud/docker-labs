@@ -1,0 +1,30 @@
+version: '3.8'
+
+# Development overrides - automatically used with docker-compose up
+services:
+  basic-app:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+    volumes:
+      - ./exercise1/app:/app
+
+  config-app:
+    environment:
+      - DEBUG=true
+    volumes:
+      - ./exercise2/app:/app
+
+  multi-env-app:
+    environment:
+      - DEBUG=true
+      - RELOAD=true
+      - LOG_LEVEL=debug
+    volumes:
+      - ./exercise3/app:/app
+
+  secrets-app:
+    environment:
+      - DEBUG=true
+    volumes:
+      - ./exercise4/app:/app

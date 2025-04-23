@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notes App - Docker Volume Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .note {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .note h3 {
+            margin-top: 0;
+            color: #444;
+        }
+
+        .note .timestamp {
+            color: #888;
+            font-size: 0.8em;
+        }
+
+        .note .delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: red;
+            text-decoration: none;
+        }
+
+        form {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .info {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Notes Application</h1>
+
+    <div class="info">
+        <p><strong>Docker Volume Demo</strong>: This application demonstrates bind mounts in Docker. Edit the files on
+            your host and see changes reflected instantly!</p>
+    </div>
+
+    <form action="/add" method="post">
+        <h2>Add a New Note</h2>
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="4" required></textarea>
+        </div>
+        <button type="submit">Add Note</button>
+    </form>
+
+    <h2>Your Notes</h2>
+    {% if notes %}
+    {% for note in notes %}
+    <div class="note">
+        <a href="/delete/{{ note[0] }}" class="delete">✕</a>
+        <h3>{{ note[1] }}</h3>
+        <p>{{ note[2] }}</p>
+        <div class="timestamp">Created: {{ note[3] }}</div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No notes yet. Add one above!</p>
+    {% endif %}
+</body>
+
+</html>

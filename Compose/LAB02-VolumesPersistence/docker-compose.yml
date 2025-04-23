@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # Exercise 1: Basic Volume Persistence with PostgreSQL
+  postgres-db:
+    image: postgres:14
+    container_name: postgres-persistence
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: dbuser
+      POSTGRES_DB: persistence_demo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./exercise1/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - lab02_network
+
+  # Exercise 2: Development Environment with Bind Mounts
+  webapp:
+    build: ./exercise2
+    container_name: webapp-dev
+    volumes:
+      - ./exercise2/app:/app
+    ports:
+      - "8080:8080"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+    networks:
+      - lab02_network
+    depends_on:
+      - postgres-db
+
+  # Exercise 3: Sharing Data Between Services
+  data-producer:
+    build: ./exercise3/producer
+    container_name: data-producer
+    volumes:
+      - shared_data:/shared-data
+    networks:
+      - lab02_network
+
+  data-consumer:
+    build: ./exercise3/consumer
+    container_name: data-consumer
+    volumes:
+      - shared_data:/shared-data:ro # Read-only mount
+    depends_on:
+      - data-producer
+    networks:
+      - lab02_network
+
+  # Exercise 4: Volume Backup and Restore
+  backup-service:
+    image: alpine:latest
+    container_name: backup-service
+    volumes:
+      - postgres_data:/source:ro # Source volume to backup (read-only)
+      - ./exercise4/backups:/backups # Backup destination on host
+    command: >
+      sh -c "echo 'Backup service ready. Run backup or restore commands manually.'"
+    networks:
+      - lab02_network
+
+networks:
+  lab02_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    name: lab02_postgres_data
+  shared_data:
+    name: lab02_shared_data

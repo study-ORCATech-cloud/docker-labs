@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # Exercise 1: Basic Environment Variables
+  basic-app:
+    build: ./exercise1
+    container_name: env-basics
+    ports:
+      - "${BASIC_APP_PORT:-8081}:8080"
+    environment:
+      - APP_NAME=Environment Demo
+      - APP_ENV=${APP_ENV:-development}
+      - DEBUG=${DEBUG:-true}
+      - LOG_LEVEL=${LOG_LEVEL:-debug}
+    networks:
+      - lab03_network
+
+  # Exercise 2: Working with .env Files
+  config-app:
+    build: ./exercise2
+    container_name: env-config
+    ports:
+      - "${CONFIG_APP_PORT:-8082}:8080"
+    env_file:
+      - ./exercise2/.env.${ENV_NAME:-dev}
+    networks:
+      - lab03_network
+
+  # Exercise 3: Multi-environment Compose Files
+  # Only basic configuration here, overrides in separate files
+  multi-env-app:
+    build: ./exercise3
+    container_name: multi-env
+    ports:
+      - "${MULTI_ENV_PORT:-8083}:8080"
+    environment:
+      - APP_NAME=Multi Environment Demo
+    networks:
+      - lab03_network
+
+  # Exercise 4: Secrets Management
+  secrets-app:
+    build: ./exercise4
+    container_name: secrets-demo
+    ports:
+      - "${SECRETS_APP_PORT:-8084}:8080"
+    environment:
+      - APP_NAME=Secrets Management Demo
+      - APP_ENV=${APP_ENV:-development}
+    env_file:
+      - ./exercise4/.env.${ENV_NAME:-dev}
+    # Docker Compose v3 secrets support
+    secrets:
+      - app_secret
+      - db_password
+    networks:
+      - lab03_network
+
+  # Database for all exercises
+  postgres:
+    image: postgres:14
+    container_name: lab03-postgres
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-example}
+      POSTGRES_USER: ${DB_USER:-dbuser}
+      POSTGRES_DB: ${DB_NAME:-config_demo}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - lab03_network
+
+networks:
+  lab03_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    name: lab03_postgres_data
+
+# Demo secrets for Exercise 4
+secrets:
+  app_secret:
+    file: ./exercise4/secrets/app_secret.dev.txt
+  db_password:
+    file: ./exercise4/secrets/db_password.dev.txt

@@ -1,0 +1,20 @@
+version: '3.8'
+
+# Development overrides - automatically applied with docker compose up
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
+    ports:
+      - "5000:5000"
+    environment:
+      - APP_ENV=development
+      - FLASK_DEBUG=1
+    command: python app.py
+
+  redis:
+    ports:
+      - "6379:6379" # Exposed for development debugging 

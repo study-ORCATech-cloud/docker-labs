@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./app
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_NAME=Environment Configuration Demo
+      - APP_ENV=development
+      - DEBUG_MODE=true
+      - HOST=0.0.0.0
+      - PORT=8080
+      # Public configuration (non-sensitive)
+      - PUBLIC_API_ENDPOINT=https://api.example.com
+      - PUBLIC_VERSION=1.0.0
+      # Insecure configuration (not recommended, shown for demonstration)
+      - DB_PASSWORD=insecure_password_example
+      - API_KEY=insecure_api_key_example
+      - JWT_SECRET=insecure_jwt_secret_example
+    volumes:
+      - ./app:/app
+    secrets:
+      - db_password
+      - api_key
+      - jwt_secret
+
+# Define secrets - in production, these would typically be created externally
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  api_key:
+    file: ./secrets/api_key.txt
+  jwt_secret:
+    file: ./secrets/jwt_secret.txt

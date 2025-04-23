@@ -1,0 +1,90 @@
+version: '3.8'
+
+# Production overrides - apply with docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args:
+        - APP_ENV=production
+    image: lab06-web:prod
+    env_file: env.prod
+    environment:
+      - APP_ENV=production
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    command: gunicorn --workers=4 --bind=0.0.0.0:5000 app:app
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    # Mount specifically required writable directories
+    volumes:
+      - type: volume
+        source: app-logs
+        target: /app/logs
+        read_only: false
+    ports:
+      - "5000:5000"
+
+  redis:
+    image: redis:6.2-alpine
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.30'
+          memory: 128M
+        reservations:
+          cpus: '0.10'
+          memory: 64M
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - redis-data:/data
+    read_only: true
+    # Redis needs these paths to be writable
+    tmpfs:
+      - /var/run
+      - /tmp
+
+volumes:
+  app-logs:
+  redis-data:

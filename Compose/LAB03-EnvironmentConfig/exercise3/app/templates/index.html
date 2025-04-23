@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ app_name }} - Environment {{ app_env }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+
+            background-color: {
+                % if app_env=='production' %
+            }
+
+            #f8f9fa {
+                % else %
+            }
+
+            #e9ecef {
+                % endif %
+            }
+
+            ;
+        }
+
+        header {
+            background-color: {
+                % if app_env=='production' %
+            }
+
+            #343a40 {
+                % else %
+            }
+
+            #6c757d {
+                % endif %
+            }
+
+            ;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .environment-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+
+            background-color: {
+                % if app_env=='production' %
+            }
+
+            #dc3545 {
+                % else %
+            }
+
+            #28a745 {
+                % endif %
+            }
+
+            ;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .host-info {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 5px solid #6c757d;
+        }
+
+        .config-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+
+            border-left: 5px solid {
+                % if app_env=='production' %
+            }
+
+            #dc3545 {
+                % else %
+            }
+
+            #28a745 {
+                % endif %
+            }
+
+            ;
+        }
+
+        .config-item {
+            padding: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .config-item:last-child {
+            border-bottom: none;
+        }
+
+        .key {
+            font-weight: bold;
+            color: #495057;
+            display: inline-block;
+            width: 180px;
+        }
+
+        .value {
+            color: #0366d6;
+        }
+
+        .debug-mode {
+            background-color: {
+                % if debug_mode %
+            }
+
+            #d4edda {
+                % else %
+            }
+
+            #f8d7da {
+                % endif %
+            }
+
+            ;
+
+            border: 1px solid {
+                % if debug_mode %
+            }
+
+            #c3e6cb {
+                % else %
+            }
+
+            #f5c6cb {
+                % endif %
+            }
+
+            ;
+
+            color: {
+                % if debug_mode %
+            }
+
+            #155724 {
+                % else %
+            }
+
+            #721c24 {
+                % endif %
+            }
+
+            ;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+
+            color: {
+                % if app_env=='production' %
+            }
+
+            #343a40 {
+                % else %
+            }
+
+            #495057 {
+                % endif %
+            }
+
+            ;
+        }
+
+        .api-link {
+            display: inline-block;
+            margin-right: 15px;
+            background-color: #0366d6;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .api-link:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>{{ app_name }}</h1>
+        <p>Environment <span class="environment-badge">{{ app_env }}</span></p>
+    </header>
+
+    <div class="container">
+        <div class="debug-mode">
+            <h3>Server Mode: {% if is_dev_mode %}Development{% else %}Production{% endif %}</h3>
+            <p>Debug: {% if debug_mode %}Enabled{% else %}Disabled{% endif %} |
+                Log Level: {{ log_level }} |
+                Hot Reload: {% if reload_enabled %}Enabled{% else %}Disabled{% endif %}</p>
+        </div>
+
+        <div class="host-info">
+            <div class="config-item">
+                <span class="key">Container Hostname:</span>
+                <span class="value">{{ hostname }}</span>
+            </div>
+            <div class="config-item">
+                <span class="key">Configuration Source:</span>
+                <span class="value">{% if is_dev_mode %}docker-compose.yml + docker-compose.override.yml{% else
+                    %}docker-compose.yml + docker-compose.prod.yml{% endif %}</span>
+            </div>
+        </div>
+
+        <h2 class="section-title">Environment Variables</h2>
+
+        <div class="config-section">
+            {% for key, value in env_vars.items() %}
+            {% if key.startswith('APP_') or key in ['DEBUG', 'LOG_LEVEL', 'RELOAD'] %}
+            <div class="config-item">
+                <span class="key">{{ key }}:</span>
+                <span class="value">{{ value }}</span>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <h2 class="section-title">API Endpoints</h2>
+        <p>
+            <a href="/info" class="api-link">Basic Info</a>
+            <a href="/environment" class="api-link">Environment Variables</a>
+            <span>(requires DEBUG=true)</span>
+        </p>
+    </div>
+
+    <footer>
+        <p>This app demonstrates using multiple compose files for different environments</p>
+        <p>Running in {{ app_env }} mode</p>
+    </footer>
+</body>
+
+</html>

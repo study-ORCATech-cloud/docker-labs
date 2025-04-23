@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ app_name }} - Environment Variables</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .env-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .env-var {
+            border-bottom: 1px solid #eee;
+            padding: 8px 0;
+        }
+
+        .env-var:last-child {
+            border-bottom: none;
+        }
+
+        .key {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .value {
+            color: #0066cc;
+        }
+
+        .env-type {
+            background-color: #e6e6e6;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .debug-info {
+            background-color: {
+                % if debug_mode %
+            }
+
+            #d4edda {
+                % else %
+            }
+
+            #f8d7da {
+                % endif %
+            }
+
+            ;
+
+            border: 1px solid {
+                % if debug_mode %
+            }
+
+            #c3e6cb {
+                % else %
+            }
+
+            #f5c6cb {
+                % endif %
+            }
+
+            ;
+
+            color: {
+                % if debug_mode %
+            }
+
+            #155724 {
+                % else %
+            }
+
+            #721c24 {
+                % endif %
+            }
+
+            ;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>{{ app_name }}</h1>
+        <p>Environment Configuration Demo</p>
+    </header>
+
+    <div class="debug-info">
+        <h3>Current Environment: {{ app_env }}</h3>
+        <p>Debug Mode: {% if debug_mode %}Enabled{% else %}Disabled{% endif %}</p>
+        <p>Log Level: {{ log_level }}</p>
+    </div>
+
+    <div class="env-card">
+        <h2>Environment Variables</h2>
+        <div class="env-type">
+            <h3>Application Configuration</h3>
+            <div class="env-var">
+                <span class="key">APP_NAME:</span>
+                <span class="value">{{ app_name }}</span>
+            </div>
+            <div class="env-var">
+                <span class="key">APP_ENV:</span>
+                <span class="value">{{ app_env }}</span>
+            </div>
+            <div class="env-var">
+                <span class="key">DEBUG:</span>
+                <span class="value">{{ debug_mode }}</span>
+            </div>
+            <div class="env-var">
+                <span class="key">LOG_LEVEL:</span>
+                <span class="value">{{ log_level }}</span>
+            </div>
+        </div>
+
+        <div class="env-type">
+            <h3>All Environment Variables</h3>
+            {% for key, value in all_env_vars.items() %}
+            <div class="env-var">
+                <span class="key">{{ key }}:</span>
+                <span class="value">{{ value }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="env-card">
+        <h2>API Endpoints</h2>
+        <p>View configuration as JSON: <a href="/config">/config</a></p>
+        <p>Debug information (only works if DEBUG=true): <a href="/debug">/debug</a></p>
+    </div>
+</body>
+
+</html>

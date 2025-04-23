@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+        }
+
+        .environment-banner {
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .development {
+            background-color: #e3f2fd;
+            border: 1px solid #2196f3;
+        }
+
+        .production {
+            background-color: #ffebee;
+            border: 1px solid #f44336;
+        }
+
+        .staging {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+        }
+
+        .config-section {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .secure {
+            border-left: 4px solid #4caf50;
+        }
+
+        .insecure {
+            border-left: 4px solid #f44336;
+        }
+
+        .public {
+            border-left: 4px solid #2196f3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .debug-badge {
+            background-color: #ff9800;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .alert {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>{{ app_name }}
+        {% if debug_mode %}
+        <span class="debug-badge">DEBUG MODE</span>
+        {% endif %}
+    </h1>
+
+    <div class="environment-banner {{ app_env }}">
+        Environment: {{ app_env | upper }}
+    </div>
+
+    {% if not has_secrets %}
+    <div class="alert">
+        <strong>Warning:</strong> Docker secrets are not available. The application might not function correctly.
+    </div>
+    {% endif %}
+
+    <h2>Configuration Overview</h2>
+
+    <div class="config-section public">
+        <h3>Public Configuration</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+            {% for key, value in public_config.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="config-section secure">
+        <h3>Secure Configuration (via Docker Secrets)</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+            {% for key, value in secure_config.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="config-section insecure">
+        <h3>Insecure Configuration (Not Recommended)</h3>
+        <p>These values are provided from environment variables directly. This is shown for demonstration purposes only.
+        </p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+            {% for key, value in insecure_config.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <footer>
+        <p><small>This page demonstrates environment configuration best practices with Docker Compose.</small></p>
+    </footer>
+</body>
+
+</html>

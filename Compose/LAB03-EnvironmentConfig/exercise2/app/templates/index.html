@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ app_name }} - Environment Configuration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+
+            background-color: {
+                % if theme=='dark' %
+            }
+
+            #333 {
+                % else %
+            }
+
+            #f5f5f5 {
+                % endif %
+            }
+
+            ;
+
+            color: {
+                % if theme=='dark' %
+            }
+
+            #f5f5f5 {
+                % else %
+            }
+
+            #333 {
+                % endif %
+            }
+
+            ;
+        }
+
+        header {
+            background-color: {
+                % if theme=='dark' %
+            }
+
+            #444 {
+                % else %
+            }
+
+            #f0f0f0 {
+                % endif %
+            }
+
+            ;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .config-card {
+            border: 1px solid {
+                % if theme=='dark' %
+            }
+
+            #555 {
+                % else %
+            }
+
+            #ddd {
+                % endif %
+            }
+
+            ;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+
+            background-color: {
+                % if theme=='dark' %
+            }
+
+            #444 {
+                % else %
+            }
+
+            #fff {
+                % endif %
+            }
+
+            ;
+        }
+
+        .config-var {
+            border-bottom: 1px solid {
+                % if theme=='dark' %
+            }
+
+            #555 {
+                % else %
+            }
+
+            #eee {
+                % endif %
+            }
+
+            ;
+            padding: 8px 0;
+        }
+
+        .config-var:last-child {
+            border-bottom: none;
+        }
+
+        .key {
+            font-weight: bold;
+
+            color: {
+                % if theme=='dark' %
+            }
+
+            #9cc3ff {
+                % else %
+            }
+
+            #0066cc {
+                % endif %
+            }
+
+            ;
+        }
+
+        .value {
+            color: {
+                % if theme=='dark' %
+            }
+
+            #90ee90 {
+                % else %
+            }
+
+            #006600 {
+                % endif %
+            }
+
+            ;
+        }
+
+        .config-section {
+            background-color: {
+                % if theme=='dark' %
+            }
+
+            #3a3a3a {
+                % else %
+            }
+
+            #f9f9f9 {
+                % endif %
+            }
+
+            ;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .env-badge {
+            background-color: {
+                % if app_env=='production' %
+            }
+
+            #dc3545 {
+                % elif app_env=='development' %
+            }
+
+            #28a745 {
+                % else %
+            }
+
+            #007bff {
+                % endif %
+            }
+
+            ;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .debug-badge {
+            background-color: {
+                % if debug_mode %
+            }
+
+            #ffc107 {
+                % else %
+            }
+
+            #6c757d {
+                % endif %
+            }
+
+            ;
+
+            color: {
+                % if debug_mode %
+            }
+
+            #000 {
+                % else %
+            }
+
+            #fff {
+                % endif %
+            }
+
+            ;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        h2 {
+            border-bottom: 1px solid {
+                % if theme=='dark' %
+            }
+
+            #555 {
+                % else %
+            }
+
+            #ddd {
+                % endif %
+            }
+
+            ;
+            padding-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+
+            color: {
+                % if theme=='dark' %
+            }
+
+            #aaa {
+                % else %
+            }
+
+            #777 {
+                % endif %
+            }
+
+            ;
+        }
+
+        .api-endpoints {
+            margin-top: 30px;
+        }
+
+        a {
+            color: {
+                % if theme=='dark' %
+            }
+
+            #9cc3ff {
+                % else %
+            }
+
+            #0066cc {
+                % endif %
+            }
+
+            ;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>{{ app_name }}</h1>
+        <p>Environment: <span class="env-badge">{{ app_env }}</span> Debug: <span class="debug-badge">{% if debug_mode
+                %}Enabled{% else %}Disabled{% endif %}</span></p>
+    </header>
+
+    <div class="config-card">
+        <h2>Application Configuration</h2>
+        <div class="config-section">
+            {% for key, value in app_config.items() %}
+            <div class="config-var">
+                <span class="key">{{ key }}:</span>
+                <span class="value">{{ value }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="config-card">
+        <h2>Database Configuration</h2>
+        <div class="config-section">
+            {% for key, value in db_config.items() %}
+            <div class="config-var">
+                <span class="key">{{ key }}:</span>
+                <span class="value">{{ value }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="config-card">
+        <h2>Feature Flags</h2>
+        <div class="config-section">
+            {% for key, value in feature_config.items() %}
+            <div class="config-var">
+                <span class="key">{{ key }}:</span>
+                <span class="value">{{ value }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="config-card">
+        <h2>UI Configuration</h2>
+        <div class="config-section">
+            {% for key, value in ui_config.items() %}
+            <div class="config-var">
+                <span class="key">{{ key }}:</span>
+                <span class="value">{{ value }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if env_specific %}
+    <div class="config-card">
+        <h2>{{ app_env|capitalize }} Specific Configuration</h2>
+        <div class="config-section">
+            {% for key, value in env_specific.items() %}
+            <div class="config-var">
+                <span class="key">{{ key }}:</span>
+                <span class="value">{{ value }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="config-card api-endpoints">
+        <h2>API Endpoints</h2>
+        <p>View configuration as JSON: <a href="/config">/config</a></p>
+    </div>
+
+    <div class="footer">
+        <p>This app demonstrates .env file usage in Docker Compose</p>
+        <p>Current Theme: {{ theme|capitalize }}</p>
+    </div>
+</body>
+
+</html>
