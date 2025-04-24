@@ -49,12 +49,15 @@ To use these labs, you'll need:
 2. Navigate to the specific lab directory you're interested in
 3. Follow the instructions in each lab's README.md file
 4. Execute the commands as directed in the lab instructions
+5. Complete the TODO exercises to reinforce learning
+6. Check solutions in the solutions.md file (if available) only after attempting the exercises
 
 Each lab contains:
 - Step-by-step instructions in README.md
 - Required Docker configuration files (Dockerfile, docker-compose.yml, etc.)
 - Source code for sample applications where needed
-- Optional challenge exercises to enhance your learning
+- TODO exercises with specific learning objectives
+- Solutions to the exercises (check only after attempting yourself)
 
 ## Learning Path
 
@@ -65,6 +68,13 @@ The labs follow a natural progression:
 3. **Swarm**: Container orchestration, scaling, service discovery
 4. **Networking**: Custom networks, communication between containers, network drivers
 5. **Registry**: Setting up and using private Docker registries
+
+## Lab Features
+
+- **Hands-on Exercises**: Each lab provides practical exercises that reinforce theoretical concepts
+- **TODO Sections**: Specific tasks for you to implement independently
+- **Solutions**: Reference implementations available for verification
+- **Real-world Scenarios**: Labs designed to emulate real DevOps workflows
 
 ## Contributing
 

@@ -12,6 +12,7 @@ In this lab, you will:
 - Implement multi-stage builds
 - Use .dockerignore to exclude files
 - Push images to Docker Hub
+- Complete hands-on TODO exercises to implement Docker best practices
 
 ## Learning Objectives
 
@@ -36,6 +37,8 @@ This lab includes two Python project examples:
 
 1. **simple-flask-app**: A basic Flask web application that demonstrates fundamental Dockerfile concepts
 2. **python-api-service**: A more complex API service with dependencies and environment configuration
+
+In both projects, you'll need to implement the Dockerfiles based on the provided TODO instructions.
 
 ## Lab Tasks
 
@@ -65,12 +68,21 @@ Key Dockerfile instructions:
 
 ### Task 2: Build a Simple Flask Application
 
-Navigate to the `simple-flask-app` directory and examine the application structure. Then build and run the image:
+Navigate to the `simple-flask-app` directory and examine the application structure:
 
 ```bash
 # Navigate to the project directory
 cd simple-flask-app
+```
 
+Read through the files and note the TODO comments. You'll need to:
+
+1. Complete the `Dockerfile` by implementing the TODO sections
+2. Make any necessary adjustments to the application code
+
+After implementing the TODOs, build and run the image:
+
+```bash
 # Build the image
 docker build -t simple-flask-app:1.0 .
 
@@ -83,14 +95,15 @@ curl http://localhost:5000
 
 ### Task 3: Implement Best Practices
 
-Examine the `python-api-service` project which implements several Docker best practices:
+Now examine the `python-api-service` project. This project requires you to implement several Docker best practices:
+
 - Using specific base image versions
 - Creating a non-root user
 - Separating dependency installation from code copying
 - Properly handling environment variables
 - Implementing health checks
 
-Build and run this more advanced service:
+Complete the TODOs in the `Dockerfile` and then build and run this more advanced service:
 
 ```bash
 # Navigate to the project
@@ -112,7 +125,7 @@ curl http://localhost:8000/health
 
 ### Task 4: Use .dockerignore
 
-Create and understand the purpose of a `.dockerignore` file to exclude unnecessary files from the build context:
+Create or update the `.dockerignore` file with appropriate rules to exclude unnecessary files from the build context:
 
 ```
 # Example .dockerignore file
@@ -129,29 +142,29 @@ Dockerfile
 README.md
 ```
 
+Analyze how this affects build time and context size.
+
 ### Task 5: Implement Multi-stage Builds
 
-Understand how to use multi-stage builds to create smaller production images:
+For the python-api-service project, complete the multi-stage build implementation in the Dockerfile:
 
 ```dockerfile
+# Example structure (you'll need to implement the details):
+
 # Build stage
 FROM python:3.9 AS builder
-WORKDIR /app
-COPY requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+# TODO: Implement build stage instructions
 
 # Final stage
 FROM python:3.9-slim
-WORKDIR /app
-COPY --from=builder /app/wheels /wheels
-RUN pip install --no-cache /wheels/*
-COPY . .
-CMD ["python", "app.py"]
+# TODO: Implement final stage instructions
 ```
+
+Consider how this improves the final image size and security.
 
 ### Task 6: Push Images to Docker Hub
 
-Tag and push your images to Docker Hub:
+Tag and push your completed images to Docker Hub:
 
 ```bash
 # Log in to Docker Hub
@@ -163,6 +176,32 @@ docker tag python-api-service:1.0 yourusername/python-api-service:1.0
 # Push to Docker Hub
 docker push yourusername/python-api-service:1.0
 ```
+
+## TODO Exercises
+
+In addition to implementing the Dockerfile TODOs, complete these exercises:
+
+### TODO 1: Optimize the Simple Flask App
+- Modify the simple-flask-app Dockerfile to use a smaller base image
+- Add a custom healthcheck to the Dockerfile
+- Add a new endpoint to the Flask app that returns the container's hostname
+- Build and test your optimized image
+
+### TODO 2: Secure the Python API Service
+- Implement proper user creation and permissions in the Dockerfile
+- Add an environment variable that controls whether debug mode is enabled
+- Implement a new security feature (e.g., rate limiting, additional auth)
+- Build and test your secured image
+
+### TODO 3: Create a Multi-stage Build for Both Projects
+- Convert both projects to use multi-stage builds
+- Compare the image sizes before and after
+- Document the benefits of your approach
+
+### TODO 4: Implement a CI/CD Pipeline Configuration
+- Create a simple CI/CD pipeline configuration file (e.g., GitHub Actions, GitLab CI)
+- Configure it to build, test, and push your Docker images
+- Include security scanning in your pipeline
 
 ## Real-World Applications
 
@@ -181,6 +220,21 @@ In this lab, you've learned:
 - How to optimize Docker images for production
 - Using multi-stage builds for efficient images
 - How to publish and distribute your Docker images
+
+After completing the TODOs and exercises, you'll have practical experience with Docker image building best practices.
+
+## Cleanup
+
+To clean up resources after completing this lab:
+
+```bash
+# Stop and remove containers
+docker stop flask-demo api-service
+docker rm flask-demo api-service
+
+# Optionally remove images
+docker rmi simple-flask-app:1.0 python-api-service:1.0
+```
 
 ## Next Steps
 

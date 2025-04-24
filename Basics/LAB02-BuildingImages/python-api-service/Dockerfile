@@ -1,42 +1,43 @@
-# Build stage
-FROM python:3.9-slim AS builder
+# TODO: Implement a multi-stage build for the Python API service
+# The build should have two stages: a builder stage and a final stage
 
-WORKDIR /app
+# TODO: Build Stage
+# HINT: Use a suitable Python base image for the build stage
+# Example: FROM python:3.9 AS builder
+FROM scratch AS builder
 
-# Copy only requirements first for better caching
-COPY requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+# TODO: Set up the working directory for the build stage
 
-# Final stage
-FROM python:3.9-slim
+# TODO: Copy only the requirements file first and prepare dependencies
+# HINT: Consider using pip wheel to create wheel files for better performance
 
-# Create a non-root user for security
-RUN useradd -m appuser
+# TODO: Final Stage
+# HINT: Use a smaller base image for the final stage
+FROM scratch
 
-# Set working directory
-WORKDIR /app
+# TODO: Create a non-root user for security
+# HINT: Use the useradd command to create a user with appropriate permissions
 
-# Copy wheels from build stage and install dependencies
-COPY --from=builder /app/wheels /wheels
-RUN pip install --no-cache /wheels/*
+# TODO: Set up the working directory for the final stage
 
-# Copy application code
-COPY app.py .
+# TODO: Copy and install dependencies from the build stage
+# HINT: Copy the wheel files from the builder stage and install them
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    ENVIRONMENT=production
+# TODO: Copy the application code
+# HINT: Only copy the files needed for the application to run
 
-# Switch to non-root user
-USER appuser
+# TODO: Set necessary environment variables
+# HINT: Configure Python to not write bytecode files and use unbuffered output
 
-# Expose the application port
-EXPOSE 8000
+# TODO: Switch to the non-root user
+# HINT: Use the USER instruction to run as the non-root user you created
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+# TODO: Expose the port the application listens on
+# HINT: The API service runs on port 8000
 
-# Command to run the application
-CMD ["python", "app.py"] 
+# TODO: Add a healthcheck
+# HINT: Use the HEALTHCHECK instruction to verify the application is running correctly
+# Example: HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8000/health || exit 1
+
+# TODO: Set the command to run the application
+# HINT: Use CMD or ENTRYPOINT to specify how to start the Python application 

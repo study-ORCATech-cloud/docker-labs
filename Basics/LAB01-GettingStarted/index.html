@@ -31,6 +31,20 @@
             padding: 10px;
             margin: 20px 0;
         }
+
+        .todo {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #fff1f0;
+            border-left: 4px solid #f5222d;
+            padding: 10px;
+            margin: 20px 0;
+        }
     </style>
 </head>
 
@@ -50,13 +64,43 @@
         <h3>Container Information:</h3>
         <pre id="container-info">Loading...</pre>
 
+        <div class="warning">
+            <h3>TODOs You Should Have Completed:</h3>
+            <p>Before running this container, you should have implemented:</p>
+            <ol>
+                <li>The <strong>Dockerfile</strong> with proper commands for building the image</li>
+                <li>The container ID extraction code in <strong>app.py</strong></li>
+                <li>A new route for environment variables in <strong>app.py</strong></li>
+            </ol>
+            <p>If you're seeing this page without implementing these, revisit those files now.</p>
+        </div>
+
+        <div class="todo">
+            <h3>Additional Exercises:</h3>
+            <p>Try these additional Docker exercises:</p>
+            <ol>
+                <li>Try accessing your environment variables route at <a href="/env-vars">/env-vars</a> (after
+                    implementing it)</li>
+                <li>Run this container with an environment variable using:<br>
+                    <code>docker run -e MY_VARIABLE="Hello Docker" ...</code>
+                </li>
+                <li>Create a data directory and mount it to the container:<br>
+                    <code>docker run -v $(pwd)/data:/app/data ...</code>
+                </li>
+                <li>Find the IP address of this container using:<br>
+                    <code>docker inspect docker-lab-py | grep IPAddress</code>
+                </li>
+            </ol>
+        </div>
+
         <h3>Next Steps:</h3>
         <p>Try these commands to continue learning:</p>
         <ul>
             <li><code>docker ps</code> - See your running container</li>
-            <li><code>docker logs [container-id]</code> - View logs</li>
-            <li><code>docker exec -it [container-id] bash</code> - Access the container shell</li>
-            <li><code>docker stop [container-id]</code> - Stop the container</li>
+            <li><code>docker logs docker-lab-py</code> - View logs</li>
+            <li><code>docker exec -it docker-lab-py bash</code> - Access the container shell</li>
+            <li><code>docker inspect docker-lab-py</code> - See detailed container info</li>
+            <li><code>docker stop docker-lab-py</code> - Stop the container</li>
         </ul>
     </div>
 

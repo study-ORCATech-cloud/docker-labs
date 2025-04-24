@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+import socket
 
 app = Flask(__name__)
 
@@ -9,6 +10,10 @@ def home():
 @app.route('/health')
 def health():
     return jsonify({"status": "healthy"})
+
+# TODO: Add a new endpoint that returns the container's hostname
+# HINT: Use the socket.gethostname() function to get the hostname
+# The endpoint should be accessible at '/hostname' and return JSON like {"hostname": "<container-id>"}
 
 if __name__ == '__main__':
     print("Starting Flask application...")

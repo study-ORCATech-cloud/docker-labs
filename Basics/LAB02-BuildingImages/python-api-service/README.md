@@ -12,6 +12,21 @@ A more advanced Python API service that demonstrates Docker best practices for p
 - API key authentication
 - Containerized using Docker with best practices
 
+## Implementation TODOs
+
+To complete this project, you need to:
+
+1. **Implement the multi-stage Dockerfile**:
+   - Complete all the TODO sections in the `Dockerfile`
+   - Create a proper build stage for dependencies
+   - Implement a secure final stage with non-root user
+   - Add necessary environment variables
+   - Configure healthchecks
+
+2. **Enhance the Flask application**:
+   - Implement the debug mode feature based on environment variable
+   - Add a new security feature as specified in the TODO comment
+
 ## API Endpoints
 
 - `/health` - Health check endpoint
@@ -20,16 +35,17 @@ A more advanced Python API service that demonstrates Docker best practices for p
 
 ## Docker Commands
 
-Build the image:
-```bash
-docker build -t python-api-service:1.0 .
-```
+After implementing the TODOs, build and run the service:
 
-Run the container with environment variables:
 ```bash
+# Build the image
+docker build -t python-api-service:1.0 .
+
+# Run the container with environment variables
 docker run -d -p 8000:8000 \
   -e API_KEY="demo-key" \
   -e LOG_LEVEL="info" \
+  -e DEBUG_MODE="false" \
   --name api-service \
   python-api-service:1.0
 ```
@@ -51,22 +67,49 @@ curl -X POST -H "Content-Type: application/json" \
   http://localhost:8000/api/echo
 ```
 
-## Advanced Dockerfile Concepts
+## Expected Multi-stage Dockerfile Structure
 
-This example demonstrates several Docker best practices:
+Your completed Dockerfile should implement:
 
-1. **Multi-stage builds** - Separates build dependencies from runtime dependencies
-2. **Non-root user** - Improves security by not running as root
-3. **Layer optimization** - Orders commands for better caching
-4. **Environment variables** - Configures application behavior at runtime
-5. **Healthchecks** - Allows Docker to monitor application health
-6. **Minimal image size** - Uses slim base image and removes unnecessary files
+1. **Build stage**:
+   - Proper base image
+   - Working directory setup
+   - Dependencies preparation (using pip wheel)
 
-## Security Best Practices
+2. **Final stage**:
+   - Smaller base image
+   - Non-root user creation
+   - Working directory setup
+   - Copying and installing dependencies from build stage
+   - Application code copying
+   - Environment variable configuration
+   - User switching
+   - Port exposure
+   - Healthcheck
+   - Run command
 
-- Running as non-root user
-- Not storing sensitive data in the image
-- Using environment variables for configuration
-- Implementing proper authentication
-- Using specific image tags rather than 'latest'
-- Keeping dependencies up to date with specific versions 
+## Docker Best Practices to Implement
+
+1. **Security**:
+   - Use non-root user
+   - Specify exact package versions
+   - Minimize image layers and size
+
+2. **Performance**:
+   - Optimize layer caching
+   - Use multi-stage builds
+   - Minimize image size
+
+3. **Maintainability**:
+   - Clear documentation
+   - Environment variable configuration
+   - Health checks for monitoring
+
+## Extension Tasks
+
+After completing the basic TODOs, try these additional improvements:
+
+1. Implement rate limiting for all API endpoints
+2. Add additional environment variables to configure timeouts or other behavior
+3. Implement a proper logging to a volume mount
+4. Create a docker-compose.yml to run this service with a database 

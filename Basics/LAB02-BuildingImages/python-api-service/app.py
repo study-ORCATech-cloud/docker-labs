@@ -17,6 +17,10 @@ app = Flask(__name__)
 # Get API key from environment variable
 API_KEY = os.environ.get('API_KEY', 'default-key')
 
+# TODO: Add a debug mode configuration based on an environment variable
+# HINT: Create a new environment variable called DEBUG_MODE and use it to
+# enable/disable debug features in the application
+
 
 @app.route('/health')
 def health():
@@ -57,6 +61,11 @@ def echo():
     data = request.get_json()
     logger.debug(f"Echo request received with data: {data}")
     return jsonify(data)
+
+
+# TODO: Implement a new security feature for the API
+# HINT: Add a rate limiting feature to prevent abuse, or implement
+# additional authentication methods. Create a new endpoint or middleware to demonstrate it.
 
 
 if __name__ == '__main__':

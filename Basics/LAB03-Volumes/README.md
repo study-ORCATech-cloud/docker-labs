@@ -10,6 +10,7 @@ In this lab, you will:
 - Share data between host and containers
 - Mount host directories into containers (bind mounts)
 - Manage volume lifecycle (create, list, remove)
+- Complete hands-on TODO exercises to implement volume solutions
 
 ## Learning Objectives
 
@@ -17,26 +18,22 @@ In this lab, you will:
 - Understand when to use bind mounts vs. named volumes vs. tmpfs
 - Practice mounting host directories for development
 - Manage Docker volumes from the CLI
+- Implement volume sharing between multiple containers
 
 ## Prerequisites
 
 - Docker Engine installed
 - Completion of LAB01-GettingStarted and LAB02-BuildingImages
+- Basic understanding of Flask applications
 
-## Lab Project
+## Lab Projects
 
-This lab includes a demo project, **volume-demo**, which illustrates basic volume usage.
+This lab includes two demo projects:
 
-Directory structure:
-```
-LAB03-Volumes/
-└── volume-demo/
-    ├── Dockerfile
-    ├── app.py
-    ├── requirements.txt
-    └── data/
-        └── README.txt
-```
+1. **volume-demo**: A basic Flask app demonstrating volume usage for data persistence
+2. **multi-container-demo**: A more complex setup showing volume sharing between containers
+
+Both projects contain TODOs that you'll need to implement to complete the lab.
 
 ## Lab Tasks
 
@@ -44,6 +41,8 @@ LAB03-Volumes/
 
 1. **Bind Mount** - Mount a host directory into a container:
    ```bash
+   # TODO: Run a container with a bind mount
+   # Mount the volume-demo/data directory from your host into /app/data in the container
    docker run -d \
      --name bind-demo \
      -v $(pwd)/volume-demo/data:/app/data \
@@ -52,7 +51,10 @@ LAB03-Volumes/
 
 2. **Named Volume** - Create and use a named volume:
    ```bash
+   # TODO: Create a named volume
    docker volume create demo-volume
+   
+   # TODO: Run a container with the named volume
    docker run -d \
      --name volume-demo \
      -v demo-volume:/app/data \
@@ -61,6 +63,7 @@ LAB03-Volumes/
 
 3. **Tmpfs** - Use tmpfs for in-memory storage:
    ```bash
+   # TODO: Run a container with a tmpfs mount
    docker run -d \
      --name tmpfs-demo \
      --tmpfs /app/data \
@@ -85,72 +88,26 @@ docker rm -f bind-demo volume-demo tmpfs-demo
 docker volume rm demo-volume
 ```
 
-### Task 3: Demo Application with Persistent Data
+### Task 3: Basic Volume Persistence Demo
 
-Let's build an application that writes and reads persistent data.
+Navigate to the `volume-demo` directory and examine the code:
 
-#### 3.1 Create the application
-
-`app.py`:
-```python
-from flask import Flask, request, jsonify
-import os
-
-app = Flask(__name__)
-DATA_DIR = '/app/data'
-if not os.path.exists(DATA_DIR):
-    os.makedirs(DATA_DIR)
-
-@app.route('/write', methods=['POST'])
-def write_data():
-    content = request.json.get('content')
-    with open(os.path.join(DATA_DIR, 'message.txt'), 'w') as f:
-        f.write(content)
-    return jsonify({'status': 'written', 'content': content})
-
-@app.route('/read')
-def read_data():
-    try:
-        with open(os.path.join(DATA_DIR, 'message.txt'), 'r') as f:
-            content = f.read()
-        return jsonify({'status': 'read', 'content': content})
-    except FileNotFoundError:
-        return jsonify({'status': 'error', 'message': 'No data found'}), 404
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-```
-
-#### 3.2 Add requirements
-
-`requirements.txt`:
-```
-flask==2.2.3
-```
-
-#### 3.3 Create the Dockerfile
-
-```dockerfile
-FROM python:3.9-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY app.py .
-VOLUME ["/app/data"]
-EXPOSE 5000
-CMD ["python", "app.py"]
-```
-
-#### 3.4 Add initial data
-
-Create `data/README.txt` with instructions or initial content.
-
-### Task 4: Run the Demo
-
-Build and run with a named volume:
 ```bash
 cd volume-demo
+```
+
+You'll need to:
+1. Understand how the application uses the data directory
+2. Complete the TODOs in the Dockerfile
+3. Build and run the application with a named volume
+
+After implementing the TODOs, run the application:
+
+```bash
+# Build the image
 docker build -t volume-demo:1.0 .
+
+# Run with a named volume
 docker run -d \
   --name volume-demo-app \
   -v demo-data:/app/data \
@@ -158,7 +115,7 @@ docker run -d \
   volume-demo:1.0
 ```
 
-Test the endpoints:
+Test the application's persistence:
 ```bash
 # Write data
 curl -X POST -H "Content-Type: application/json" \
@@ -167,21 +124,93 @@ curl -X POST -H "Content-Type: application/json" \
 
 # Read data
 curl http://localhost:5000/read
+
+# Stop and remove the container (but keep the volume)
+docker stop volume-demo-app
+docker rm volume-demo-app
+
+# Start a new container using the same volume
+docker run -d \
+  --name volume-demo-app-2 \
+  -v demo-data:/app/data \
+  -p 5000:5000 \
+  volume-demo:1.0
+
+# Verify data persisted
+curl http://localhost:5000/read
 ```
 
+### Task 4: Multi-Container Volume Sharing
 
-Test write/read endpoints as above.
+Navigate to the `multi-container-demo` directory:
+
+```bash
+cd multi-container-demo
+```
+
+This more advanced demo requires you to:
+1. Complete the TODOs in the API's Dockerfile
+2. Implement the Docker commands to set up shared volumes
+3. Test communication between containers through shared volumes
+
+Read the README.md in the multi-container-demo directory for specific instructions.
+
+## TODO Exercises
+
+In addition to implementing the Dockerfile TODOs, complete these exercises:
+
+### TODO 1: Volume Backup and Restore
+- Create a named volume with some data in it
+- Create a backup of this volume to a tar file
+- Delete the volume
+- Restore the volume from your backup
+- Verify your data is intact
+
+### TODO 2: Implement a Development Environment
+- Modify the volume-demo app to use bind mounts for development
+- Set up a configuration so that code changes on your host automatically appear in the container
+- Add a file watcher (optional) or manually restart the application to see changes
+
+### TODO 3: Database Volume Management
+- Run a database container (e.g., PostgreSQL, MySQL) with a named volume
+- Create a database and add some data
+- Stop and remove the container (keeping the volume)
+- Start a new database container with the same volume
+- Verify your data is still available
+
+### TODO 4: Implement Volume Sharing in docker-compose.yml
+- Create a docker-compose.yml file for the multi-container demo
+- Define all necessary volumes and volume mappings
+- Use the compose file to start and stop the entire application
 
 ## Clean Up
 
+To clean up resources after completing this lab:
+
 ```bash
-docker rm -f volume-demo-app
-docker volume rm demo-data
+# Stop and remove all running containers
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+
+# List all volumes
+docker volume ls
+
+# Remove all unused volumes
+docker volume prune
+
+# Or remove specific volumes
+docker volume rm demo-data web-content api-data db-data
 ```
 
 ## Real-World Applications
 
-Using volumes is essential for stateful applications, databases, and sharing configuration or data between containers.
+Using volumes is essential for stateful applications, databases, and sharing configuration or data between containers. The techniques you've learned are valuable for:
+
+- Database persistence in production environments
+- Sharing configuration files between services
+- Development environments with hot-reload capabilities
+- Backup and disaster recovery strategies
+- Content management systems and file storage
 
 ## Next Steps
 
