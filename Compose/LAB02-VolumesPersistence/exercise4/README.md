@@ -5,9 +5,10 @@ This exercise demonstrates how to back up and restore Docker volumes, which is e
 ## Overview
 
 In this exercise, you will:
-1. Create a backup of a PostgreSQL database volume
-2. Restore the backup to a new volume
-3. Learn best practices for volume data backup and recovery
+1. Configure Docker Compose for volume backup and restore operations
+2. Create a backup of a PostgreSQL database volume
+3. Restore the backup to a new volume
+4. Learn best practices for volume data backup and recovery
 
 ## Files
 
@@ -17,7 +18,19 @@ In this exercise, you will:
 
 ## Instructions
 
-### Step 1: Create Data in the PostgreSQL Database
+### Step 1: Configure the Docker Compose File
+
+Before starting, add the backup service configuration to the `docker-compose.yml` file:
+
+```yaml
+# TODO: Configure the backup-service with:
+# 1. The postgres_data volume mounted as read-only at /source
+# 2. The local ./exercise4/backups directory mounted at /backups
+```
+
+This configuration will allow the backup service to access the PostgreSQL data volume without modifying it.
+
+### Step 2: Create Data in the PostgreSQL Database
 
 Before backing up data, ensure that the PostgreSQL database has some data:
 
@@ -32,7 +45,7 @@ docker-compose exec postgres-db psql -U dbuser -d persistence_demo -c "INSERT IN
 docker-compose exec postgres-db psql -U dbuser -d persistence_demo -c "SELECT * FROM notes;"
 ```
 
-### Step 2: Create a Backup
+### Step 3: Create a Backup
 
 ```bash
 # Use the backup-service container to run the backup script
@@ -42,7 +55,7 @@ docker-compose exec backup-service /backups/backup.sh postgres_data
 docker-compose exec backup-service ls -lh /backups
 ```
 
-### Step 3: Simulate Data Loss
+### Step 4: Simulate Data Loss
 
 Let's simulate a data loss scenario:
 
@@ -54,7 +67,7 @@ docker-compose exec postgres-db psql -U dbuser -d persistence_demo -c "DELETE FR
 docker-compose exec postgres-db psql -U dbuser -d persistence_demo -c "SELECT * FROM notes WHERE title = 'Backup Test';"
 ```
 
-### Step 4: Restore from Backup
+### Step 5: Restore from Backup
 
 To restore from a backup, we need to:
 1. Stop the database service
@@ -77,7 +90,7 @@ docker-compose up -d postgres-db
 docker-compose exec postgres-db psql -U dbuser -d persistence_demo -c "SELECT * FROM notes WHERE title = 'Backup Test';"
 ```
 
-### Step 5: Cleanup
+### Step 6: Cleanup
 
 When you're finished with this exercise, clean up the resources:
 
@@ -102,13 +115,14 @@ docker-compose rm -f postgres-db backup-service
 3. Save the compressed archive to a host directory
 4. For restoration, extract the archive to a target volume
 
-## Best Practices
+## Best Practices for Production Environments
 
 - Regularly schedule backups of important volumes
 - Store backups in multiple locations (local and remote)
 - Test restore procedures periodically
 - Implement backup rotation (daily, weekly, monthly)
 - Document backup and restore procedures
+- Include volume backups in your disaster recovery plan
 
 ## Security Considerations
 
@@ -122,4 +136,5 @@ docker-compose rm -f postgres-db backup-service
 - **Incremental Backups**: Only back up changed files
 - **Point-in-Time Recovery**: Database WAL logs for time-specific recovery
 - **Automated Backup Solutions**: Tools like restic, borg, or specialized Docker backup solutions
-- **Remote Storage**: Pushing backups to S3, GCS, or other cloud storage 
+- **Remote Storage**: Pushing backups to S3, GCS, or other cloud storage
+- **Docker Compose Extension**: Create a dedicated service for automated backups 

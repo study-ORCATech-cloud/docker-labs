@@ -8,7 +8,7 @@ This lab focuses on managing application configurations across different environ
 - Implement multiple environment configurations
 - Work with .env files and variable substitution
 - Configure secrets and sensitive information
-- Override default environment settings
+- Master Docker Compose override files for different environments
 
 ## Prerequisites
 
@@ -16,6 +16,14 @@ This lab focuses on managing application configurations across different environ
 - Docker Compose v2 installed
 - Basic understanding of Docker concepts
 - Completion of previous labs recommended
+
+## Important Instructions
+
+This lab is designed for hands-on learning. You are expected to:
+- Implement Docker Compose environment configurations yourself
+- Follow the TODOs in the provided YAML files
+- Test different environment configurations
+- Document your findings about how Docker environment management works
 
 ## Environment Configuration Concepts
 
@@ -27,13 +35,43 @@ Docker Compose provides several ways to manage environment configuration:
 4. **Command-line arguments** for overriding values
 5. **Docker secrets** for sensitive information
 
+## Lab Structure
+
+This lab contains multiple Docker Compose files with TODO comments where you'll need to implement various environment configurations. The lab is structured to support all exercises:
+
+```
+LAB03-EnvironmentConfig/
+│
+├── docker-compose.yml         # Base configuration with TODOs
+├── docker-compose.override.yml # Development overrides with TODOs
+├── docker-compose.prod.yml    # Production overrides with TODOs
+│
+├── exercise1/                 # Basic environment variables
+│   ├── README.md              # Instructions for exercise 1
+│   └── ...                    # Exercise files
+│
+├── exercise2/                 # Working with .env files
+│   ├── README.md              # Instructions for exercise 2
+│   ├── dot.env.dev            # Development environment file
+│   └── dot.env.prod           # Production environment file
+│
+├── exercise3/                 # Multi-environment setup
+│   ├── README.md              # Instructions for exercise 3
+│   └── ...                    # Exercise files
+│
+└── exercise4/                 # Secrets management 
+    ├── README.md              # Instructions for exercise 4
+    ├── secrets/               # Secret files directory
+    └── ...                    # Exercise files
+```
+
 ## Lab Exercises
 
 ### Exercise 1: Basic Environment Variables
 
 In this exercise, you'll learn how to configure and use environment variables in a web application.
 
-1. Define environment variables in docker-compose.yml
+1. Configure environment variables in docker-compose.yml
 2. Access environment variables in application code
 3. Override environment variables at runtime
 
@@ -58,19 +96,16 @@ Set up different compose files for different environments.
 
 Learn how to handle sensitive configurations securely.
 
-1. Use external secrets providers
+1. Use Docker secrets for sensitive information
 2. Implement different secrets for different environments
-3. Best practices for sensitive data
+3. Follow best practices for sensitive data
 
-## Files Included
+## Getting Started
 
-- `docker-compose.yml` - Base configuration for all exercises
-- `docker-compose.override.yml` - Development overrides
-- `docker-compose.prod.yml` - Production configuration
-- `/exercise1` - Basic environment variable examples
-- `/exercise2` - .env file implementations
-- `/exercise3` - Multi-environment setup
-- `/exercise4` - Secrets management examples
+1. Review the main `docker-compose.yml` file and identify the TODOs
+2. Read the README.md in each exercise directory for specific instructions
+3. Implement the required environment configurations
+4. Test each exercise following the instructions provided
 
 ## Commands Reference
 

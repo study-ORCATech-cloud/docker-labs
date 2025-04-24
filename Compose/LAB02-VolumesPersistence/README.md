@@ -18,6 +18,14 @@ This lab focuses on implementing data persistence in Docker containers using vol
 - Basic understanding of Docker concepts
 - Completion of previous labs recommended
 
+## Important Instructions
+
+This lab is designed for hands-on learning. You are expected to:
+- Implement Docker Compose volume configurations yourself
+- Follow the TODOs in the provided YAML files
+- Test volume persistence with various storage options
+- Document your findings about how Docker volumes work
+
 ## Volume Concepts in Docker
 
 Docker provides several options for persistent storage:
@@ -26,13 +34,42 @@ Docker provides several options for persistent storage:
 2. **Bind Mounts**: Connect container paths to host filesystem, good for development
 3. **tmpfs Mounts**: Stored in host memory only, useful for sensitive or temporary data
 
+## Lab Structure
+
+This lab contains a main `docker-compose.yml` file with TODO comments where you'll need to implement various volume configurations. The file is structured to support all four exercises, each demonstrating a different aspect of Docker volume management:
+
+```
+LAB02-VolumesPersistence/
+│
+├── docker-compose.yml       # Main configuration file with TODOs
+├── exercise1/               # Basic volume persistence
+│   ├── README.md            # Instructions for exercise 1
+│   └── init.sql             # Database initialization script
+│
+├── exercise2/               # Development with bind mounts
+│   ├── README.md            # Instructions for exercise 2
+│   ├── Dockerfile           # Application container definition
+│   └── app/                 # Application source code
+│
+├── exercise3/               # Sharing data between services
+│   ├── README.md            # Instructions for exercise 3
+│   ├── producer/            # Data producer service
+│   └── consumer/            # Data consumer service
+│
+└── exercise4/               # Volume backup and restore
+    ├── README.md            # Instructions for exercise 4
+    ├── backup.sh            # Backup script
+    ├── restore.sh           # Restore script
+    └── backups/             # Directory for backup files
+```
+
 ## Lab Exercises
 
 ### Exercise 1: Basic Volume Persistence
 
 In this exercise, you'll create a simple database application that persists data between container restarts.
 
-1. Set up a PostgreSQL container with a named volume
+1. Configure a PostgreSQL container with a named volume
 2. Store and retrieve data
 3. Destroy and recreate the container to verify data persistence
 
@@ -40,7 +77,7 @@ In this exercise, you'll create a simple database application that persists data
 
 Create a development environment for a web application where code changes reflect immediately.
 
-1. Set up a web application with code mounted from the host
+1. Configure a web application with code mounted from the host
 2. Make changes to the code and observe them in real-time
 3. Configure proper development settings in Compose
 
@@ -48,7 +85,7 @@ Create a development environment for a web application where code changes reflec
 
 Set up a multi-container application that shares data between services.
 
-1. Create a data processing pipeline with shared volumes
+1. Configure a data processing pipeline with shared volumes
 2. Implement read-only volumes where appropriate
 3. Test data flow between containers
 
@@ -56,17 +93,16 @@ Set up a multi-container application that shares data between services.
 
 Learn how to back up and restore data from Docker volumes.
 
-1. Create and populate a database volume
+1. Configure a backup service with access to database volumes
 2. Back up volume data to the host
 3. Restore from backup to a new volume
 
-## Files Included
+## Getting Started
 
-- `docker-compose.yml` - Main configuration for all exercises
-- `/exercise1` - Files for basic persistence
-- `/exercise2` - Web app development environment
-- `/exercise3` - Multi-container data sharing example
-- `/exercise4` - Volume backup/restore utilities
+1. Review the main `docker-compose.yml` file and identify the TODOs
+2. Read the README.md in each exercise directory for specific instructions
+3. Implement the required volume configurations
+4. Test each exercise following the instructions provided
 
 ## Commands Reference
 
@@ -118,4 +154,4 @@ docker volume ls | grep lab02
 
 ## Next Steps
 
-After completing this lab, you'll be ready to move on to LAB0-EnvironmentConfig to learn about managing application configurations across environments. 
+After completing this lab, you'll be ready to move on to LAB03-EnvironmentConfig to learn about managing application configurations across environments. 

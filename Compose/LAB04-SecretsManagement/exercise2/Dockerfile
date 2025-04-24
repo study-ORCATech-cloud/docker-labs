@@ -8,6 +8,9 @@ RUN pip install --no-cache-dir flask psycopg2-binary requests
 # Copy application code
 COPY app.py /app/
 
+# TODO: Notice no secrets are hardcoded in this Dockerfile
+# HINT: All secrets will be read from mounted files at runtime
+
 # Create a non-root user for security
 RUN groupadd -g 1000 appuser && \
     useradd -u 1000 -g appuser -s /bin/bash -m appuser && \

@@ -6,7 +6,11 @@ services:
     container_name: secrets-insecure-standalone
     ports:
       - "8001:8000"
+    # TODO: Notice how secrets are exposed in plain text environment variables
+    # HINT: This exercise demonstrates what NOT to do with secrets
     environment:
+      # TODO: Configure environment variables with sensitive information
+      # HINT: This is insecure and only for demonstration purposes
       - APP_NAME=Insecure Secrets Demo
       - DB_USER=admin
       - DB_PASSWORD=insecure_password_123

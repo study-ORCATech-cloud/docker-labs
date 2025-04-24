@@ -6,8 +6,15 @@ services:
     container_name: secrets-file-based-standalone
     ports:
       - "8002:8000"
+    # TODO: Configure non-sensitive environment variables here
+    # HINT: Notice that no secrets are included in environment variables
     environment:
-      - APP_NAME=File-Based Secrets Demo
-    volumes:
-      - ./secrets:/run/secrets:ro # Read-only mount for secrets
+      # TODO: Add your non-sensitive environment variables here
+      # HINT: Keep sensitive data out of environment variables
+
+    # TODO: Configure a volume mount for secrets
+    # HINT: Mount the secrets directory as read-only at /run/secrets
+    # HINT: The :ro suffix ensures container can't modify secrets
+    volumes: # TODO: Add your volume mount configuration here
+
     command: [ "python", "app.py" ]

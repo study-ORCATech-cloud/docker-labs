@@ -1,5 +1,8 @@
 version: '3.8'
 
+# This file will only be used when explicitly specified with:
+# docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
 # Production configuration
 services:
   basic-app:
@@ -19,33 +22,24 @@ services:
       replicas: 2
 
   multi-env-app:
+    # Define production environment overrides here
     environment:
-      - APP_ENV=production
-      - DEBUG=false
-      - LOG_LEVEL=error
-      - RELOAD=false
-    restart: always
-    deploy:
-      replicas: 2
+      # Add production-specific environment variables
 
   secrets-app:
-    environment:
-      - APP_ENV=production
-      - DEBUG=false
+    # Define production environment overrides here
+    environment: # Add production-specific environment variables
     env_file:
       - ./exercise4/.env.prod
     restart: always
     secrets:
-      - app_secret
-      - db_password
-    deploy:
-      replicas: 2
+      # Reference production secrets here
 
   postgres:
-    environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/db_password_prod
-    secrets:
-      - db_password_prod
+    # Define production environment overrides here
+    environment: # Add production-specific environment variables
+    env_file:
+      - ./exercise4/.env.prod
     restart: always
     deploy:
       resources:
@@ -53,11 +47,6 @@ services:
           cpus: '1'
           memory: 1G
 
-# Production secrets
-secrets:
-  app_secret:
-    file: ./exercise4/secrets/app_secret.prod.txt
-  db_password:
-    file: ./exercise4/secrets/db_password.prod.txt
-  db_password_prod:
-    file: ./exercise4/secrets/db_password.prod.txt
+# TODO: Define production-specific secrets
+# HINT: Use the production secrets files in ./exercise4/secrets/ directory
+secrets: # Define production secrets here

@@ -1,143 +1,149 @@
 # Exercise 3: Multi-environment Compose Files
 
-This exercise demonstrates how to use multiple Docker Compose files to manage different environment configurations.
+This exercise demonstrates how to configure different environments using multiple Docker Compose files.
 
 ## Overview
 
 In this exercise, you will:
 
-1. Use a base docker-compose.yml file for common configuration
-2. Learn how docker-compose.override.yml is automatically used for development
-3. Create a production-specific compose file
-4. Merge multiple compose files for different environments
+1. Set up a base Docker Compose configuration
+2. Configure development overrides with docker-compose.override.yml
+3. Create production overrides with docker-compose.prod.yml
+4. Learn how Docker Compose merges configuration files
 
 ## Files
 
-- `Dockerfile`: Defines the Python environment for the web application
-- `app/app.py`: Flask application that reads environment variables
-- `app/templates/index.html`: HTML template that displays configuration
-- `app/requirements.txt`: Python dependencies
-- `../../docker-compose.yml`: Base configuration for all services
-- `../../docker-compose.override.yml`: Development-specific overrides
-- `../../docker-compose.prod.yml`: Production-specific configuration
+- `Dockerfile`: Defines the container environment
+- `app/`: Contains the application code
+- `docker-compose.yml`: Base Docker Compose configuration (shared between environments)
+- `docker-compose.override.yml`: Development-specific overrides (used by default)
+- `docker-compose.prod.yml`: Production-specific overrides (must be explicitly specified)
 
 ## Instructions
 
-### Step 1: Examine the Compose Files
+### Step 1: Configure the Base Compose File
 
-First, look at the different compose files:
+First, open the main `docker-compose.yml` file and locate the TODO section for the `multi-env-app` service. Implement the base configuration:
 
-```bash
-# View the base compose file
-cat docker-compose.yml
-
-# View the development overrides (automatically applied)
-cat docker-compose.override.yml
-
-# View the production configuration
-cat docker-compose.prod.yml
+```yaml
+# TODO: Configure basic environment (development) settings here
+# HINT: Production settings will be in docker-compose.prod.yml
 ```
 
-Notice how:
-- The base compose file defines common settings
-- The override file adds development-specific settings
-- The production file adds production-specific settings
+Your task is to define the environment section with a basic application name that will be used in both environments.
 
-### Step 2: Start the Application with Default (Development) Configuration
+### Step 2: Configure the Development Overrides
+
+Open the `docker-compose.override.yml` file and locate the TODO section for the `multi-env-app` service. Implement the development-specific overrides:
+
+```yaml
+# TODO: Add development-specific configuration overrides for multi-env-app
+# HINT: Include development-specific environment variables like DEBUG=true
+```
+
+Add development-specific environment variables like:
+- DEBUG mode enabled
+- Development log level
+- Any other development-specific settings
+
+### Step 3: Configure the Production Overrides
+
+Open the `docker-compose.prod.yml` file and locate the TODO section for the `multi-env-app` service. Implement the production-specific overrides:
+
+```yaml
+# TODO: Add production-specific configuration for multi-env-app
+# HINT: Disable debugging, set log level, and add production-specific settings
+```
+
+Add production-specific environment variables and configuration like:
+- Set APP_ENV to production
+- Disable DEBUG mode
+- Set stricter log level
+- Add production-specific deployment settings (restart policy, etc.)
+
+### Step 4: Start with Default Environment (Development)
+
+When you run Docker Compose without specifying an override file, it automatically uses docker-compose.override.yml:
 
 ```bash
-# Start the application with default configuration (base + override)
+# Start with development configuration
 docker-compose up -d multi-env-app
 
-# Check that the container is running
+# Check the running container
 docker-compose ps multi-env-app
 ```
 
-### Step 3: Access the Development Application
-
-Open your browser and navigate to http://localhost:8083
-
-You should see the application running with development configuration:
-- Debug mode enabled
-- Development-specific features
-- Bind mount for real-time code changes
-
-### Step 4: View the Compose Configuration
-
-You can see the combined (merged) compose configuration:
+### Step 5: Check Development Environment Settings
 
 ```bash
-# View the merged configuration
-docker-compose config
+# View the environment variables in the container
+docker-compose exec multi-env-app env | grep -E 'APP_|DEBUG|LOG_LEVEL'
+
+# Access the application and observe development features
+curl http://localhost:8083/config
 ```
 
-Notice how the override settings have been automatically applied.
+### Step 6: Switch to Production Environment
 
-### Step 5: Launch with Production Configuration
-
-Now, switch to production configuration:
+To use the production configuration, you need to explicitly specify both the base and the production compose files:
 
 ```bash
 # Stop the development container
 docker-compose stop multi-env-app
 
-# Use the production compose file explicitly
+# Start with production configuration
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d multi-env-app
 
-# Check that the container is running
+# Check the running container
 docker-compose ps multi-env-app
 ```
 
-### Step 6: Access the Production Application
-
-Open your browser and navigate to http://localhost:8083 again.
-
-Notice the changes in the application:
-- Debug mode disabled
-- Production-specific settings
-- No bind mount (code changes won't be reflected)
-- Replicas might be set to 2 (though this is handled by swarm/kubernetes in real production)
-
-### Step 7: View the Production Configuration
+### Step 7: Check Production Environment Settings
 
 ```bash
-# View the production merged configuration
+# View the environment variables in the container
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec multi-env-app env | grep -E 'APP_|DEBUG|LOG_LEVEL'
+
+# Access the application and observe production features
+curl http://localhost:8083/config
+```
+
+### Step 8: Understanding Configuration Merging
+
+Docker Compose merges configuration files in the order they're specified, with later files overriding values in earlier files.
+
+To see how the configurations are merged:
+
+```bash
+# View the merged development configuration
+docker-compose config
+
+# View the merged production configuration
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml config
 ```
 
-Notice how the production settings override the base settings.
-
-### Step 8: Cleanup
+### Step 9: Cleanup
 
 When you're finished with this exercise, clean up the resources:
 
 ```bash
-# If you're using the development configuration
-docker-compose stop multi-env-app
-docker-compose rm -f multi-env-app
-
-# If you're using the production configuration
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml stop multi-env-app
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml rm -f multi-env-app
+# Stop and remove the container
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
 ```
 
-## How It Works
+## How Docker Compose File Merging Works
 
-1. Docker Compose merges multiple configuration files in the order they are specified:
-   - Later files override values from earlier files
-   - The base `docker-compose.yml` provides default configuration
-   - `docker-compose.override.yml` is automatically applied if present
-   - Other files like `docker-compose.prod.yml` must be explicitly specified
-
-2. The merging process is intelligent:
-   - Simple values are replaced
-   - Lists (like ports) are replaced
-   - Mappings (like environment variables) are merged
+1. Docker Compose always loads the base `docker-compose.yml` file
+2. By default, it automatically merges `docker-compose.override.yml` if present
+3. You can specify additional override files with `-f` flags
+4. Configuration values are merged with later files taking precedence
+5. Some settings (like environment variables) are completely replaced rather than merged
 
 ## Key Learning Points
 
-- Using multiple compose files helps organize environment-specific settings
-- The `docker-compose.override.yml` file is automatically used for development
-- Production settings can be kept separate with a specific compose file
-- Merging is done with the `-f` flag to specify multiple files
-- The order of files matters - later files override earlier ones 
+- Use a base compose file for common configuration
+- Create environment-specific override files for different environments
+- Let the default override be development for easier local development
+- Explicitly specify production overrides when deploying
+- Docker Compose merging follows specific rules
+- Use compose file version 3.4+ for the best override experience 

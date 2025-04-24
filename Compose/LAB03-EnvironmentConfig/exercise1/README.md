@@ -7,9 +7,9 @@ This exercise demonstrates how to configure and use environment variables in a D
 In this exercise, you will:
 
 1. Configure environment variables in docker-compose.yml
-2. Learn how to access environment variables in Python code
+2. Learn how Docker passes environment variables to containers
 3. See how to override environment variables at runtime
-4. Understand environment variable precedence
+4. Understand environment variable precedence in Docker Compose
 
 ## Files
 
@@ -30,7 +30,25 @@ In this exercise, you will:
 
 ## Instructions
 
-### Step 1: Start the Application with Default Settings
+### Step 1: Configure Environment Variables in Docker Compose
+
+First, open the `docker-compose.yml` file and locate the TODO section for the `basic-app` service. You need to implement the environment variables configuration.
+
+```yaml
+# TODO: Configure environment variables for the basic-app service
+# HINT: Define APP_NAME, APP_ENV, DEBUG, and LOG_LEVEL variables
+# HINT: Use both hardcoded values and variable substitution ${VAR:-default}
+```
+
+Your task is to define the environment section with the following:
+- A fixed APP_NAME value (like "Environment Demo")
+- APP_ENV using variable substitution with a default value
+- DEBUG with variable substitution and a default
+- LOG_LEVEL with variable substitution and a default
+
+### Step 2: Start the Application with Default Settings
+
+After implementing the environment section in docker-compose.yml:
 
 ```bash
 # Start the application with default environment variables
@@ -40,13 +58,13 @@ docker-compose up -d basic-app
 docker-compose ps basic-app
 ```
 
-### Step 2: Access the Application
+### Step 3: Access the Application
 
 Open your browser and navigate to http://localhost:8081
 
 You should see the Environment Variables Demo with the default configuration.
 
-### Step 3: View Environment Variables in the Container
+### Step 4: View Environment Variables in the Container
 
 ```bash
 # View all environment variables in the container
@@ -56,7 +74,7 @@ docker-compose exec basic-app env | grep -E 'APP_|DEBUG|LOG_LEVEL'
 curl http://localhost:8081/config
 ```
 
-### Step 4: Override Environment Variables
+### Step 5: Override Environment Variables
 
 You can override environment variables in several ways:
 
@@ -78,22 +96,9 @@ APP_ENV=testing docker-compose up -d basic-app
 docker-compose exec basic-app env | grep APP_ENV
 ```
 
-### Step 5: Change Environment Variables Permanently
+### Step 6: Change Environment Variables Permanently
 
-Edit the docker-compose.yml file to change environment variables permanently:
-
-```yaml
-basic-app:
-  build: ./exercise1
-  container_name: env-basics
-  ports:
-    - "${BASIC_APP_PORT:-8081}:8080"
-  environment:
-    - APP_NAME=Modified App Name
-    - APP_ENV=${APP_ENV:-development}
-    - DEBUG=${DEBUG:-true}
-    - LOG_LEVEL=${LOG_LEVEL:-debug}
-```
+Edit the docker-compose.yml file to change environment variables permanently by modifying your implementation in the environment section.
 
 Then restart the service:
 
@@ -101,7 +106,7 @@ Then restart the service:
 docker-compose up -d basic-app
 ```
 
-### Step 6: Cleanup
+### Step 7: Cleanup
 
 When you're finished with this exercise, clean up the resources:
 
@@ -113,13 +118,13 @@ docker-compose stop basic-app
 docker-compose rm -f basic-app
 ```
 
-## How It Works
+## How Docker Compose Environment Variables Work
 
-1. Docker Compose reads environment variables from:
+1. Docker Compose reads environment variables from (in order of precedence):
+   - Command line overrides (`-e` flag)
    - Your shell environment
    - .env file (if present)
    - Values specified in the docker-compose.yml file
-   - Command line overrides
 
 2. Environment variables are passed to the container at runtime
 
@@ -130,4 +135,5 @@ docker-compose rm -f basic-app
 - Environment variables provide a way to configure applications without changing code
 - Docker Compose makes it easy to specify and override environment variables
 - Environment variables should be used for configuration that changes between environments
-- Docker Compose supports variable substitution using ${VARIABLE:-default} syntax 
+- Docker Compose supports variable substitution using ${VARIABLE:-default} syntax
+- Variables in the compose file follow a specific precedence order 

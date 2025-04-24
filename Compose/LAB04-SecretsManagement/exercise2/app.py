@@ -8,12 +8,16 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Define paths to secrets files
+# TODO: These paths define where Docker will mount our secrets
+# HINT: The /run/secrets is the conventional path for Docker secrets
+# HINT: When using docker-compose, you'll mount your secrets directory here
 SECRETS_PATH = '/run/secrets'
 DB_PASSWORD_FILE = os.path.join(SECRETS_PATH, 'db_password.txt')
 API_KEY_FILE = os.path.join(SECRETS_PATH, 'api_key.txt')
 JWT_SECRET_FILE = os.path.join(SECRETS_PATH, 'jwt_secret.txt')
 
+# TODO: This function reads secrets from files mounted by Docker
+# HINT: The files must be mounted as a volume in your docker-compose.yml
 def read_secret_file(file_path, default=''):
     """Safely read secret from file, with error handling"""
     try:

@@ -1,25 +1,17 @@
 version: "3.8"
 
+# TODO: Define services for the application
+# HINT: You need to define two services - service1 and hibye
 services:
-  service1:
-    build:
-      context: ./service1
-      dockerfile: Dockerfile  # Default name, but explicitly stated
-    ports:
-      - "5000:5000"
-    environment:
-      - PORT=5000
-      - SERVICE2_NAME=hibye
-    depends_on:
-      - hibye
+  # TODO: Configure service1
+  # HINT: Build from the service1 directory using the default Dockerfile name
+  # HINT: Expose port 5000 to host machine
+  # HINT: Set required environment variables (PORT and SERVICE2_NAME)
+  # HINT: Make sure service1 depends on hibye service
 
-  hibye:
-    build:
-      context: ./service2
-      dockerfile: chokomoko  # Custom Dockerfile name
-    ports:
-      - "5001:5001"
-    environment:
-      - PORT=5001
+  # TODO: Configure service2 (named hibye)
+  # HINT: Build from the service2 directory using the custom Dockerfile name 'chokomoko'
+  # HINT: Expose port 5001 to host machine
+  # HINT: Set the required environment variable (PORT)
 
-# docker-compose up --build
+  # Execute with: docker-compose up --build

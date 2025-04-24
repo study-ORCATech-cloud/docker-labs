@@ -1,6 +1,8 @@
 version: '3.8'
 
-# Development overrides - automatically used with docker-compose up
+# This is the docker-compose.override.yml file that will be automatically used with docker-compose.yml
+# when you run docker-compose up without specifying a file
+
 services:
   basic-app:
     environment:
@@ -16,15 +18,20 @@ services:
       - ./exercise2/app:/app
 
   multi-env-app:
+    # Define development environment overrides here
     environment:
-      - DEBUG=true
-      - RELOAD=true
-      - LOG_LEVEL=debug
-    volumes:
-      - ./exercise3/app:/app
+      # Add development-specific environment variables
 
   secrets-app:
-    environment:
-      - DEBUG=true
-    volumes:
-      - ./exercise4/app:/app
+    # Define development environment overrides here
+    environment: # Add development-specific environment variables
+
+    # TODO: Replace the secrets for development environment
+    # HINT: Use the development secrets files
+    # HINT: In docker-compose.override.yml, you can override the secrets section
+    secrets:
+      # Reference development secrets here
+
+      # TODO: Override secrets for development environment
+      # HINT: Use the development secrets files in ./exercise4/secrets/ directory
+secrets: # Define development secrets here

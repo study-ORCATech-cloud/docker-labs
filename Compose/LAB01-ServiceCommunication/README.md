@@ -19,6 +19,14 @@ In this lab, you will:
 - Test network isolation between services
 - Implement solutions for network connectivity challenges
 
+## Important Instructions
+
+This lab is designed for hands-on learning. You are expected to:
+- Implement Docker Compose configurations yourself
+- Follow the TODOs in the provided YAML files
+- Test service communication with various network configurations
+- Document your findings about how Docker networking works
+
 ## Project Structure
 
 ```
@@ -36,8 +44,8 @@ LAB01-ServiceCommunication/
 │   └── src/
 │       └── main.py         # Flask app that provides responses
 │
-├── docker-compose.yaml       # Default compose file with shared network
-└── docker-compose-isolated.yaml # Compose file with isolated networks
+├── docker-compose.yaml       # TODO: Implement shared network configuration
+└── docker-compose-isolated.yaml # TODO: Implement isolated networks configuration
 ```
 
 ---
@@ -56,10 +64,10 @@ LAB01-ServiceCommunication/
 
 ## Part 2: Docker Compose Configuration with Shared Network
 
-The default `docker-compose.yaml` defines:
-- **`service1`**: Listens on port `5000` and connects to `service2`
-- **`service2`** (named as `hibye`): Listens on port `5001` and provides data
-- Both services can communicate with each other using service names as hostnames
+The default `docker-compose.yaml` needs to be completed with:
+- **`service1`**: Configured to listen on port `5000` and connect to `service2`
+- **`service2`** (named as `hibye`): Configured to listen on port `5001` and provide data
+- Both services should be able to communicate with each other using service names as hostnames
 
 ### How Docker Compose Networking Works by Default:
 - Docker Compose automatically creates a default network for all services
@@ -70,7 +78,17 @@ The default `docker-compose.yaml` defines:
 
 ### Exercise 1: Running Services on a Shared Network
 
-1. **Build and Start Services**
+1. **Complete the Docker Compose File**
+
+   First, complete the TODOs in the `docker-compose.yaml` file to define both services properly.
+   
+   Key configurations to implement:
+   - Build configurations for both services
+   - Port mappings to access services from the host machine
+   - Environment variables necessary for services to function
+   - Service dependencies
+
+2. **Build and Start Services**
 
    From the `LAB01-ServiceCommunication` directory, run:
 
@@ -83,7 +101,7 @@ The default `docker-compose.yaml` defines:
    - Start the services in containers
    - Make them accessible on their defined ports
 
-2. **Verify Services are Running**
+3. **Verify Services are Running**
 
    Check that both services are running:
 
@@ -93,7 +111,7 @@ The default `docker-compose.yaml` defines:
 
    You should see both services in the "Up" state.
 
-3. **Test the Individual Services**
+4. **Test the Individual Services**
 
    Verify each service is responding correctly:
 
@@ -108,7 +126,7 @@ The default `docker-compose.yaml` defines:
    curl http://localhost:5001/welcome
    ```
 
-4. **Test Inter-Service Communication**
+5. **Test Inter-Service Communication**
 
    Now test if `service1` can successfully communicate with `service2`:
 
@@ -118,7 +136,7 @@ The default `docker-compose.yaml` defines:
 
    You should receive a response that includes the message from `service2`, indicating successful communication between the services.
 
-5. **Explore Docker Networks**
+6. **Explore Docker Networks**
 
    Examine the network that Docker Compose created:
 
@@ -136,21 +154,28 @@ The default `docker-compose.yaml` defines:
 
 Now, let's see what happens when services are on separate networks and cannot communicate.
 
-1. **Build and Start Services with Isolated Networks**
+1. **Complete the Isolated Docker Compose File**
 
-   Use the provided `docker-compose-isolated.yaml`:
+   Implement the TODOs in `docker-compose-isolated.yaml` to:
+   - Configure both services similar to the default file
+   - Connect each service to a different isolated network
+   - Define both isolated networks
+
+2. **Build and Start Services with Isolated Networks**
+
+   Use the completed `docker-compose-isolated.yaml`:
 
    ```sh
    docker-compose -f docker-compose-isolated.yaml up --build
    ```
 
-2. **Verify Services are Running**
+3. **Verify Services are Running**
 
    ```sh
    docker-compose -f docker-compose-isolated.yaml ps
    ```
 
-3. **Test Inter-Service Communication (Expected to Fail)**
+4. **Test Inter-Service Communication (Expected to Fail)**
 
    When you try to access `service1`'s `/getMessage` endpoint, it should fail to reach `service2`:
 
@@ -160,7 +185,7 @@ Now, let's see what happens when services are on separate networks and cannot co
 
    You should receive an error response, as the services cannot communicate across their isolated networks.
 
-4. **Explore Docker Networks**
+5. **Explore Docker Networks**
 
    Examine the isolated networks:
 
@@ -217,6 +242,14 @@ In production environments, service communication patterns like these are essent
 - **Service Discovery**: Enabling services to find and communicate with each other
 - **Load Balancing**: Distributing traffic across multiple service instances
 
+## Part 5: Additional Challenges
+
+1. **Implement Service Discovery**: Modify the services to use Docker's DNS service discovery to locate each other dynamically.
+
+2. **Add a Third Service**: Create a new service that aggregates data from both existing services and expose it on a different port.
+
+3. **Implement a Bridge Service**: Create a dedicated bridge service that allows other services to communicate indirectly.
+
 ---
 
 ## Cleanup
@@ -248,10 +281,5 @@ docker network prune
 
 ### Services Cannot Communicate
 - Verify they are on the same network with `docker network inspect`
-- Check if the service name in the environment variable matches the compose service name
-- Ensure the target port is correct in the request URL
-
-### Container Exits Immediately
-- Check for errors in the application code
-- Verify the `CMD` or `ENTRYPOINT` in the Dockerfile
-- Inspect logs with `docker-compose logs service1` 
+- Check if the service names are correctly specified in environment variables
+- Ensure that the service dependency is configured properly 

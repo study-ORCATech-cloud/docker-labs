@@ -1,8 +1,6 @@
-# LAB04-Layers: Solutions
+# LAB04: Docker Image Layers - Solutions
 
-**INSTRUCTOR NOTE: This file contains complete solutions and should NOT be shared with students. It is for instructor reference only. Students should work through the exercises themselves without seeing these solutions in advance.**
-
-This file contains solutions to the exercises in LAB04-Layers. Students should attempt to solve the exercises on their own before referring to these solutions.
+This document contains solutions to the TODO exercises in LAB04. Use these solutions only after attempting to solve the problems yourself.
 
 ## Single-Stage Dockerfile Solution
 

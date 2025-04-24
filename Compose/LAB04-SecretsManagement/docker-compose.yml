@@ -10,6 +10,8 @@ services:
     container_name: secrets-insecure
     ports:
       - "8001:8000"
+    # TODO: Notice how secrets are exposed in environment variables
+    # HINT: This is insecure and demonstrates what NOT to do
     environment:
       - APP_NAME=Insecure Secrets Demo
       - DB_USER=admin
@@ -25,28 +27,43 @@ services:
     container_name: secrets-file-based
     ports:
       - "8002:8000"
+    # TODO: Configure only non-sensitive environment variables here
+    # HINT: Sensitive data should be in the mounted secrets volume
     environment:
       - APP_NAME=File-Based Secrets Demo
+    # TODO: Configure a volume mount for secrets
+    # HINT: Mount the secrets directory as read-only at /run/secrets
     volumes:
       - ./exercise2/secrets:/run/secrets:ro
     networks:
       - secrets-net
 
+  # Exercise 3: Redis-based secrets management
+  # TODO: Implement the services for the Redis-based secrets management solution
+  # HINT: You'll need a Redis service, an API service, and an application service
+  # redis-secrets-app:
+  #   Build and configure this service to use the external Redis secrets manager
+
   # Exercise 4: Implements secure alternatives for Compose
-  # (Exercise 3 uses Swarm mode and needs to be run separately)
   secure-app:
     build: ./exercise4
     container_name: secrets-secure
     ports:
       - "8004:8000"
+    # TODO: Configure environment variables (non-sensitive only)
+    # HINT: Only include app configuration, not secrets
     environment:
       - APP_NAME=Secure Secrets Demo
       - APP_ENV=production
+    # TODO: Configure a volume mount for the secrets directory
+    # HINT: Mount as read-only to prevent container from modifying secrets
     volumes:
       - ./exercise4/secrets:/app/secrets:ro
     networks:
       - secrets-net
-    command: [ "python", "-m", "secrets-manager", "--run", "app.py" ]
+    # TODO: Configure the command to run the secrets manager before the app
+    # HINT: The secrets manager should decrypt and load secrets before running the app
+    command: [ "python", "secrets_manager.py", "--run", "app.py" ]
 
 networks:
   secrets-net:

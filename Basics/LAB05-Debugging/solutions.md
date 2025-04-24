@@ -1,8 +1,6 @@
-# LAB05-Debugging: Solutions
+# LAB05: Debugging Docker Containers - Solutions
 
-**INSTRUCTOR NOTE: This file contains complete solutions and should NOT be shared with students. It is for instructor reference only. Students should work through the exercises themselves without seeing these solutions in advance.**
-
-This file contains solutions to the debugging exercises in LAB05-Debugging.
+This document contains solutions to the TODO exercises in LAB05. Use these solutions only after attempting to solve the problems yourself.
 
 ## Fixed Dockerfile
 
@@ -220,4 +218,31 @@ You can verify that the solutions work by:
    docker logs fixed-container
    ```
 
-The container should now be stable, handle errors gracefully, use resources efficiently, and pass its healthcheck. 
+The container should now be stable, handle errors gracefully, use resources efficiently, and pass its healthcheck.
+
+## Common Debugging Techniques
+
+1. **Reading Container Logs**:
+   ```bash
+   docker logs [container_id]
+   ```
+
+2. **Inspecting Container State**:
+   ```bash
+   docker inspect [container_id]
+   ```
+
+3. **Entering a Running Container**:
+   ```bash
+   docker exec -it [container_id] /bin/bash
+   ```
+
+4. **Monitoring Resource Usage**:
+   ```bash
+   docker stats [container_id]
+   ```
+
+5. **Checking Network Connections**:
+   ```bash
+   docker run --network container:[container_id] nicolaka/netshoot ss -tunlp
+   ``` 

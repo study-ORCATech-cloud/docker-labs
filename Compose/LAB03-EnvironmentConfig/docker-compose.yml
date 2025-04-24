@@ -7,11 +7,9 @@ services:
     container_name: env-basics
     ports:
       - "${BASIC_APP_PORT:-8081}:8080"
-    environment:
-      - APP_NAME=Environment Demo
-      - APP_ENV=${APP_ENV:-development}
-      - DEBUG=${DEBUG:-true}
-      - LOG_LEVEL=${LOG_LEVEL:-debug}
+    # TODO: Configure environment variables for the basic-app service
+    # HINT: Define APP_NAME, APP_ENV, DEBUG, and LOG_LEVEL variables
+    # HINT: Use both hardcoded values and variable substitution ${VAR:-default}
     networks:
       - lab03_network
 
@@ -21,8 +19,8 @@ services:
     container_name: env-config
     ports:
       - "${CONFIG_APP_PORT:-8082}:8080"
-    env_file:
-      - ./exercise2/.env.${ENV_NAME:-dev}
+    # TODO: Configure the service to use an environment file
+    # HINT: Use the env_file directive to load from ./exercise2/.env.${ENV_NAME:-dev}
     networks:
       - lab03_network
 
@@ -33,8 +31,8 @@ services:
     container_name: multi-env
     ports:
       - "${MULTI_ENV_PORT:-8083}:8080"
-    environment:
-      - APP_NAME=Multi Environment Demo
+    # TODO: Configure basic environment (development) settings here
+    # HINT: Production settings will be in docker-compose.prod.yml
     networks:
       - lab03_network
 
@@ -44,15 +42,12 @@ services:
     container_name: secrets-demo
     ports:
       - "${SECRETS_APP_PORT:-8084}:8080"
-    environment:
-      - APP_NAME=Secrets Management Demo
-      - APP_ENV=${APP_ENV:-development}
-    env_file:
-      - ./exercise4/.env.${ENV_NAME:-dev}
-    # Docker Compose v3 secrets support
-    secrets:
-      - app_secret
-      - db_password
+    # TODO: Configure environment variables for the secrets-app service
+    # HINT: Include APP_NAME and APP_ENV variables
+    # TODO: Configure the service to use an environment file
+    # HINT: Use env_file directive to point to ./exercise4/.env.${ENV_NAME:-dev}
+    # TODO: Configure secrets for the service
+    # HINT: Reference the app_secret and db_password secrets defined below
     networks:
       - lab03_network
 
@@ -60,10 +55,8 @@ services:
   postgres:
     image: postgres:14
     container_name: lab03-postgres
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-example}
-      POSTGRES_USER: ${DB_USER:-dbuser}
-      POSTGRES_DB: ${DB_NAME:-config_demo}
+    # TODO: Configure database environment variables
+    # HINT: Use variable substitution with defaults for POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -80,8 +73,6 @@ volumes:
     name: lab03_postgres_data
 
 # Demo secrets for Exercise 4
-secrets:
-  app_secret:
-    file: ./exercise4/secrets/app_secret.dev.txt
-  db_password:
-    file: ./exercise4/secrets/db_password.dev.txt
+# TODO: Configure Docker secrets for the secrets-app service
+# HINT: Define file-based secrets for app_secret and db_password
+secrets: # Define your secrets here (use the provided files in ./exercise4/secrets/ directory)

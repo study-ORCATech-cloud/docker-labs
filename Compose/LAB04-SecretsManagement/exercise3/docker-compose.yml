@@ -3,16 +3,27 @@ version: '3.8'
 services:
   # Redis as a secrets store
   secrets-store:
+    # TODO: Configure the Redis secrets store service
+    # HINT: Use redis:alpine as the base image
+    # HINT: Use a command to set a password for Redis
     image: redis:alpine
     container_name: secrets-store
     command: redis-server --requirepass "${REDIS_PASSWORD:-secretstorepwd}"
     volumes:
+      # TODO: Configure a volume for persistent Redis data
+      # HINT: Use a named volume for Redis data
       - secrets-data:/data
     environment:
+      # TODO: Configure environment variables for Redis
+      # HINT: Set REDIS_PASSWORD using variable substitution
       - REDIS_PASSWORD=${REDIS_PASSWORD:-secretstorepwd}
     networks:
+      # TODO: Configure networks for this service
+      # HINT: Connect to the secrets-net network
       - secrets-net
     healthcheck:
+      # TODO: Add a healthcheck for Redis
+      # HINT: Use redis-cli ping as the test command
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 30s
       timeout: 10s
@@ -20,45 +31,71 @@ services:
 
   # API to manage secrets
   secrets-api:
+    # TODO: Configure the secrets API service
+    # HINT: Use the build directive to point to ./secrets-api
     build: ./secrets-api
     container_name: secrets-api
     ports:
+      # TODO: Configure ports for the API service
+      # HINT: Map port 8088 to container port 8000
       - "8088:8000" # API port for managing secrets
     depends_on:
+      # TODO: Set up service dependencies
+      # HINT: This service depends on the secrets-store
       - secrets-store
     environment:
+      # TODO: Configure environment variables for the API
+      # HINT: Include Redis connection details and credentials
       - REDIS_HOST=secrets-store
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD:-secretstorepwd}
       - API_KEY=${API_KEY:-api_key_for_secrets_manager}
     networks:
+      # TODO: Configure networks for this service
+      # HINT: Connect to the secrets-net network
       - secrets-net
 
   # Main application that uses secrets
   app:
+    # TODO: Configure the main application service
+    # HINT: Build from the current directory
     build: .
     container_name: secrets-redis-app
     ports:
+      # TODO: Configure ports for the application
+      # HINT: Map port 8003 to container port 8000
       - "8003:8000"
     depends_on:
+      # TODO: Set up service dependencies
+      # HINT: This service depends on the secrets-api
       - secrets-api
     environment:
+      # TODO: Configure environment variables for the app
+      # HINT: Include app configuration and API connection details
       - APP_NAME=Redis Secrets Demo
       - APP_ENV=production
       - SECRETS_API_URL=http://secrets-api:8000
       - SECRETS_API_KEY=${API_KEY:-api_key_for_secrets_manager}
     networks:
+      # TODO: Configure networks for this service
+      # HINT: Connect to the secrets-net network
       - secrets-net
     healthcheck:
+      # TODO: Add a healthcheck for the application
+      # HINT: Use curl to check the application health endpoint
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 20s
 
+# TODO: Define the networks section
+# HINT: Create a bridge network called secrets-net
 networks:
   secrets-net:
     driver: bridge
 
+# TODO: Define the volumes section
+# HINT: Create a named volume for Redis data persistence
 volumes:
   secrets-data:

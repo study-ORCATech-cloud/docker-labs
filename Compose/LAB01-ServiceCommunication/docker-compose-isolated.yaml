@@ -1,33 +1,21 @@
 version: "3.8"
 
+# TODO: Define services for the application with isolated networks
+# HINT: Both services need to be configured similarly to docker-compose.yaml but with network isolation
 services:
-  service1:
-    build:
-      context: ./service1
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    environment:
-      - PORT=5000
-      - SERVICE2_NAME=hibye
-    networks:
-      - network1
+  # TODO: Configure service1
+  # HINT: Build from the service1 directory using the default Dockerfile name
+  # HINT: Expose port 5000 to host machine
+  # HINT: Set required environment variables (PORT and SERVICE2_NAME)
+  # HINT: Connect only to network1
 
-  hibye:
-    build:
-      context: ./service2
-      dockerfile: chokomoko
-    ports:
-      - "5001:5001"
-    environment:
-      - PORT=5001
-    networks:
-      - network2
+  # TODO: Configure service2 (named hibye)
+  # HINT: Build from the service2 directory using the custom Dockerfile name 'chokomoko'
+  # HINT: Expose port 5001 to host machine
+  # HINT: Set the required environment variable (PORT)
+  # HINT: Connect only to network2
 
-networks:
-  network1:
-    driver: bridge
-  network2:
-    driver: bridge
+  # TODO: Define isolated networks
+  # HINT: Create two separate bridge networks (network1 and network2)
 
-# docker-compose -f docker-compose-isolated.yaml up --build 
+  # Execute with: docker-compose -f docker-compose-isolated.yaml up --build 

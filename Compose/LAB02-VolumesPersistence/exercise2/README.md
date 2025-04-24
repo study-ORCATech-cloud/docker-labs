@@ -5,9 +5,10 @@ This exercise demonstrates how to use bind mounts for real-time development. You
 ## Overview
 
 In this exercise, you will:
-1. Run a Python Flask web application with a bind mount to the host filesystem
-2. Make changes to the code and see them reflected immediately
-3. Understand the difference between bind mounts and volumes for development
+1. Configure Docker Compose with bind mounts for local development
+2. Run a Python Flask web application with a bind mount to the host filesystem
+3. Make changes to the code and see them reflected immediately
+4. Understand the difference between bind mounts and volumes for development
 
 ## Files
 
@@ -19,7 +20,19 @@ In this exercise, you will:
 
 ## Instructions
 
-### Step 1: Start the Web Application
+### Step 1: Configure the Docker Compose File
+
+Before starting, add the bind mount configuration to the `docker-compose.yml` file:
+
+```yaml
+# TODO: Configure the webapp service with:
+# 1. A bind mount that maps ./exercise2/app on your host to /app in the container
+# 2. Make sure the Dockerfile and docker-compose.yml work together correctly
+```
+
+This configuration will sync your local development files with the container.
+
+### Step 2: Start the Web Application
 
 ```bash
 # Make sure the database is running
@@ -32,13 +45,13 @@ docker-compose up -d webapp
 docker-compose ps
 ```
 
-### Step 2: Access the Web Application
+### Step 3: Access the Web Application
 
 Open your browser and navigate to http://localhost:8080
 
 You should see the Notes application. Try adding a few notes to test that it works.
 
-### Step 3: Edit the Code to See Real-time Changes
+### Step 4: Edit the Code to See Real-time Changes
 
 Now for the fun part - make changes to the code and see them update in real-time without restarting the container!
 
@@ -56,7 +69,7 @@ For more significant changes, try:
 - Change how notes are displayed
 - Add sorting or filtering functionality 
 
-### Step 4: Observe the Bind Mount in Action
+### Step 5: Observe the Bind Mount in Action
 
 ```bash
 # View the bind mount configuration
@@ -66,7 +79,7 @@ docker-compose config
 docker inspect webapp-dev
 ```
 
-### Step 5: Cleanup
+### Step 6: Cleanup
 
 When you're finished with this exercise, clean up the resources:
 
@@ -101,4 +114,5 @@ Unlike named volumes, bind mounts:
 - Bind mounts provide a direct connection to host files
 - They enable efficient development workflows
 - The performance may vary based on host OS and Docker implementation
-- Using bind mounts in development but volumes in production is a common pattern 
+- Using bind mounts in development but volumes in production is a common pattern
+- Docker Compose makes development environment setup consistent across team members 

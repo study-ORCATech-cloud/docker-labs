@@ -24,7 +24,21 @@ This pattern is common in microservices architectures where services need to sha
 
 ## Instructions
 
-### Step 1: Start the Data Pipeline
+### Step 1: Configure the Docker Compose File
+
+Before starting, add the volume configurations to the `docker-compose.yml` file:
+
+```yaml
+# TODO: Configure the data-producer service with:
+# 1. A shared named volume mounted to /shared-data
+
+# TODO: Configure the data-consumer service with:
+# 1. The same shared volume mounted to /shared-data with read-only flag (:ro)
+```
+
+Don't forget to define the shared volume in the volumes section of the Docker Compose file.
+
+### Step 2: Start the Data Pipeline
 
 ```bash
 # Start both the producer and consumer services
@@ -34,7 +48,7 @@ docker-compose up -d data-producer data-consumer
 docker-compose ps
 ```
 
-### Step 2: Observe Data Sharing
+### Step 3: Observe Data Sharing
 
 ```bash
 # View logs from the producer
@@ -44,7 +58,7 @@ docker-compose logs data-producer
 docker-compose logs data-consumer
 ```
 
-### Step 3: Inspect the Shared Volume
+### Step 4: Inspect the Shared Volume
 
 ```bash
 # List the contents of the shared volume
@@ -60,7 +74,7 @@ docker-compose exec data-consumer cat /shared-data/metadata_1.json
 docker-compose exec data-consumer ls -la /shared-data/results
 ```
 
-### Step 4: Understand Read-Only Mounts
+### Step 5: Understand Read-Only Mounts
 
 The consumer service has a read-only mount to the shared volume, which provides an extra layer of security:
 
@@ -71,7 +85,7 @@ docker-compose exec data-consumer touch /shared-data/test_file.txt
 
 The command should fail with a "Read-only file system" error.
 
-### Step 5: Cleanup
+### Step 6: Cleanup
 
 When you're finished with this exercise, clean up the resources:
 
@@ -106,4 +120,5 @@ docker-compose rm -f data-producer data-consumer
 - Volumes can be shared between multiple containers
 - Read-only mounts provide security by preventing modification
 - Shared volumes allow for a simple data exchange mechanism
-- No direct network communication is needed between the services 
+- No direct network communication is needed between the services
+- Docker Compose makes it easy to define shared volumes for multiple services 
