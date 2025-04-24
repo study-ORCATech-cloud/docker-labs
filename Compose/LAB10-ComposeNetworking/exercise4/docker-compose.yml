@@ -3,72 +3,53 @@ version: '3.8'
 services:
   # API Gateway - only service exposed to the outside world
   gateway:
-    build:
-      context: ./gateway
-      dockerfile: Dockerfile
-    image: microservices-gateway
-    ports:
-      - "8080:8080"
-    environment:
-      - USERS_SERVICE_HOST=users-service
-      - USERS_SERVICE_PORT=8000
-      - PRODUCTS_SERVICE_HOST=products-service
-      - PRODUCTS_SERVICE_PORT=8000
-    volumes:
-      - ./gateway:/app
-    networks:
-      - gateway-network
-    depends_on:
-      - users-service
-      - products-service
+    # TODO: Build the gateway service
+    # HINT: Use the build directive to point to ./gateway
+    # TODO: Configure ports for the gateway service
+    # HINT: Map port 8080 to container port 8080
+    # TODO: Configure environment variables for the gateway service
+    # HINT: Set USERS_SERVICE_HOST, USERS_SERVICE_PORT, PRODUCTS_SERVICE_HOST, and PRODUCTS_SERVICE_PORT
+    # TODO: Configure volumes for the gateway service
+    # HINT: Mount ./gateway to /app
+    # TODO: Configure service dependencies for the gateway service
+    # HINT: Depends on users-service and products-service
+    # TODO: Configure networks for the gateway service
+    # HINT: Connect to the gateway-network
 
   # Users Service - only accessible through the gateway
   users-service:
-    build:
-      context: ./users-service
-      dockerfile: Dockerfile
-    image: microservices-users-service
-    environment:
-      - MONGO_HOST=db-service
-      - MONGO_PORT=27017
-      - MONGO_DB=microservices
-    volumes:
-      - ./users-service:/app
-    networks:
-      - gateway-network
-      - service-network
-      - db-network
-    depends_on:
-      - db-service
+    # TODO: Build the users service
+    # HINT: Use the build directive to point to ./users-service
+    # TODO: Configure environment variables for the users service
+    # HINT: Set MONGO_HOST, MONGO_PORT, and MONGO_DB
+    # TODO: Configure volumes for the users service
+    # HINT: Mount ./users-service to /app
+    # TODO: Configure service dependencies for the users service
+    # HINT: Depends on db-service
+    # TODO: Configure networks for the users service
+    # HINT: Connect to gateway-network, service-network, and db-network
 
   # Products Service - only accessible through the gateway
   products-service:
-    build:
-      context: ./products-service
-      dockerfile: Dockerfile
-    image: microservices-products-service
-    environment:
-      - MONGO_HOST=db-service
-      - MONGO_PORT=27017
-      - MONGO_DB=microservices
-    volumes:
-      - ./products-service:/app
-    networks:
-      - gateway-network
-      - service-network
-      - db-network
-    depends_on:
-      - db-service
+    # TODO: Build the products service
+    # HINT: Use the build directive to point to ./products-service
+    # TODO: Configure environment variables for the products service
+    # HINT: Set MONGO_HOST, MONGO_PORT, and MONGO_DB
+    # TODO: Configure volumes for the products service
+    # HINT: Mount ./products-service to /app
+    # TODO: Configure service dependencies for the products service
+    # HINT: Depends on db-service
+    # TODO: Configure networks for the products service
+    # HINT: Connect to gateway-network, service-network, and db-network
 
   # Database Service - only accessible by the service layer
   db-service:
-    image: mongo:5.0
-    volumes:
-      - mongo-data:/data/db
-      - ./db-service/init-scripts:/docker-entrypoint-initdb.d
-    networks:
-      - db-network
-    # No ports exposed to host - only accessible by services
+    # TODO: Configure the database service
+    # HINT: Use mongo:5.0 as the image
+    # TODO: Configure volumes for the database service
+    # HINT: Use a named volume for data and mount init scripts
+    # TODO: Configure networks for the database service
+    # HINT: Connect to the db-network
 
     # Define isolated network segments
 networks:

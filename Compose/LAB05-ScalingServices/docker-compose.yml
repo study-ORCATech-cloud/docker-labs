@@ -4,60 +4,48 @@ services:
   # TODO: Configure a scalable web service for horizontal scaling
   # HINT: Configure the service to allow multiple replicas
   web:
-    build: ./web
-    ports:
-      - "5000"
-    depends_on:
-      - redis
-    environment:
-      - FLASK_ENV=development
+    # TODO: Configure build path to the web service
+    # TODO: Configure port mapping for the web service
+    # TODO: Configure service dependencies
+    # TODO: Configure environment variables
+
     # TODO: Configure the deployment settings for scaling
     # HINT: Set the initial number of replicas and resource constraints
-    deploy:
-      replicas: 1
+
     # TODO: Configure networks for service discovery
     # HINT: Connect to a shared network for inter-service communication
-    networks:
-      - webnet
 
   # TODO: Configure a Redis service for centralized data storage
   # HINT: This allows sharing state between web service instances
   redis:
-    image: redis:6.2-alpine
+    # TODO: Specify the Redis image
+
     # TODO: Configure networks for Redis
     # HINT: Must be on the same network as the web services
-    networks:
-      - webnet
+
     # TODO: Configure persistent storage for Redis
     # HINT: Mount a named volume for data persistence
-    volumes:
-      - redis-data:/data
 
   # TODO: Configure Nginx as a load balancer for web service instances
   # HINT: This service will distribute requests across web containers
   nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
+    # TODO: Specify the Nginx image
+
+    # TODO: Configure port mapping for the load balancer
+
     # TODO: Mount the Nginx configuration file
     # HINT: Use a bind mount with read-only permissions
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
     # TODO: Configure service dependencies
     # HINT: Nginx should start after the web service
-    depends_on:
-      - web
+
     # TODO: Configure networks for the load balancer
     # HINT: Must be on the same network as the web services
-    networks:
-      - webnet
 
-# TODO: Define a Docker network for container communication
-# HINT: Create a bridge network that all services will connect to
-networks:
-  webnet:
+    # TODO: Define a Docker network for container communication
+    # HINT: Create a bridge network that all services will connect to
+networks: # TODO: Define your network configuration
 
-    # TODO: Define a Docker volume for persistent data
-    # HINT: Create a named volume for Redis data storage
-volumes:
-  redis-data:
+# TODO: Define a Docker volume for persistent data
+# HINT: Create a named volume for Redis data storage
+volumes: # TODO: Define your volume configuration

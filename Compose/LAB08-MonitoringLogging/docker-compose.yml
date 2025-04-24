@@ -6,151 +6,130 @@ version: '3.8'
 services:
   # Exercise 1: Basic Monitoring Demo
   exercise1-app:
-    build: ./exercise1/app
-    container_name: monitoring-demo-app-1
-    ports:
-      - "8081:8080"
-    networks:
-      - monitoring-net
+    # TODO: Build the exercise1 app service
+    # HINT: Use the build directive to point to ./exercise1/app
+    # TODO: Configure ports for the exercise1 app
+    # HINT: Map port 8081 to container port 8080
+    # TODO: Configure networks for the exercise1 app
+    # HINT: Connect to the monitoring-net network
 
   # Exercise 2: Advanced Application Monitoring
   exercise2-app:
-    build: ./exercise2/app
-    container_name: monitoring-demo-app-2
-    ports:
-      - "8082:8080"
-    networks:
-      - monitoring-net
+    # TODO: Build the exercise2 app service
+    # HINT: Use the build directive to point to ./exercise2/app
+    # TODO: Configure ports for the exercise2 app
+    # HINT: Map port 8082 to container port 8080
+    # TODO: Configure networks for the exercise2 app
+    # HINT: Connect to the monitoring-net network
 
   # Exercise 3: Centralized Logging Demo
   exercise3-app:
-    build: ./exercise3/app
-    container_name: logging-demo-app
-    ports:
-      - "8083:8080"
-    networks:
-      - monitoring-net
+    # TODO: Build the exercise3 app service
+    # HINT: Use the build directive to point to ./exercise3/app
+    # TODO: Configure ports for the exercise3 app
+    # HINT: Map port 8083 to container port 8080
+    # TODO: Configure networks for the exercise3 app
+    # HINT: Connect to the monitoring-net network
 
   # Exercise 4: Complete Observability Demo
   exercise4-app:
-    build: ./exercise4/app
-    container_name: observability-demo-app
-    ports:
-      - "8084:8080"
-    networks:
-      - monitoring-net
+    # TODO: Build the exercise4 app service
+    # HINT: Use the build directive to point to ./exercise4/app
+    # TODO: Configure ports for the exercise4 app
+    # HINT: Map port 8084 to container port 8080
+    # TODO: Configure networks for the exercise4 app
+    # HINT: Connect to the monitoring-net network
 
   # Prometheus - Metrics Storage and Query Engine
   prometheus:
-    image: prom/prometheus:v2.45.0
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
-    networks:
-      - monitoring-net
+    # TODO: Configure the Prometheus service
+    # HINT: Use prom/prometheus:v2.45.0 as the image
+    # TODO: Configure ports for Prometheus
+    # HINT: Map port 9090 to container port 9090
+    # TODO: Configure volumes for Prometheus
+    # HINT: Mount prometheus.yml and use a named volume for data
+    # TODO: Configure networks for Prometheus
+    # HINT: Connect to the monitoring-net network
 
   # Grafana - Visualization Platform
   grafana:
-    image: grafana/grafana:10.0.3
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_USERS_ALLOW_SIGN_UP=false
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana:/etc/grafana
-    networks:
-      - monitoring-net
-    depends_on:
-      - prometheus
+    # TODO: Configure the Grafana service
+    # HINT: Use grafana/grafana:10.0.3 as the image
+    # TODO: Configure ports for Grafana
+    # HINT: Map port 3000 to container port 3000
+    # TODO: Configure environment variables for Grafana
+    # HINT: Set admin password and disable sign-up
+    # TODO: Configure volumes for Grafana
+    # HINT: Use a named volume for data and mount the grafana directory
+    # TODO: Configure networks for Grafana
+    # HINT: Connect to the monitoring-net network
+    # TODO: Set service dependencies for Grafana
+    # HINT: Depends on Prometheus
 
   # Elasticsearch - Log Storage and Search
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
-    container_name: elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - monitoring-net
+    # TODO: Configure the Elasticsearch service
+    # HINT: Use docker.elastic.co/elasticsearch/elasticsearch:7.17.9 as the image
+    # TODO: Configure ports for Elasticsearch
+    # HINT: Map ports 9200 and 9300
+    # TODO: Configure environment variables for Elasticsearch
+    # HINT: Set discovery type and Java options
+    # TODO: Configure volumes for Elasticsearch
+    # HINT: Use a named volume for data
+    # TODO: Configure networks for Elasticsearch
+    # HINT: Connect to the monitoring-net network
 
   # Logstash - Log Processing Pipeline
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.17.9
-    container_name: logstash
-    ports:
-      - "5044:5044"
-      - "5000:5000/tcp"
-      - "5000:5000/udp"
-      - "9600:9600"
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ./logstash/pipeline:/usr/share/logstash/pipeline
-    networks:
-      - monitoring-net
-    depends_on:
-      - elasticsearch
+    # TODO: Configure the Logstash service
+    # HINT: Use docker.elastic.co/logstash/logstash:7.17.9 as the image
+    # TODO: Configure ports for Logstash
+    # HINT: Map ports 5044, 5000, and 9600
+    # TODO: Configure environment variables for Logstash
+    # HINT: Set Java options
+    # TODO: Configure volumes for Logstash
+    # HINT: Mount logstash.yml and pipeline directory
+    # TODO: Configure networks for Logstash
+    # HINT: Connect to the monitoring-net network
+    # TODO: Set service dependencies for Logstash
+    # HINT: Depends on Elasticsearch
 
   # Kibana - Log Visualization
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.9
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    networks:
-      - monitoring-net
-    depends_on:
-      - elasticsearch
+    # TODO: Configure the Kibana service
+    # HINT: Use docker.elastic.co/kibana/kibana:7.17.9 as the image
+    # TODO: Configure ports for Kibana
+    # HINT: Map port 5601
+    # TODO: Configure environment variables for Kibana
+    # HINT: Set Elasticsearch hosts
+    # TODO: Configure networks for Kibana
+    # HINT: Connect to the monitoring-net network
+    # TODO: Set service dependencies for Kibana
+    # HINT: Depends on Elasticsearch
 
   # Node Exporter - Host Metrics
   node-exporter:
-    image: prom/node-exporter:v1.6.1
-    container_name: node-exporter
-    ports:
-      - "9100:9100"
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    networks:
-      - monitoring-net
+    # TODO: Configure the Node Exporter service
+    # HINT: Use prom/node-exporter:v1.6.1 as the image
+    # TODO: Configure ports for Node Exporter
+    # HINT: Map port 9100
+    # TODO: Configure volumes for Node Exporter
+    # HINT: Mount /proc, /sys, and rootfs as read-only
+    # TODO: Configure networks for Node Exporter
+    # HINT: Connect to the monitoring-net network
 
   # cAdvisor - Container Metrics
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.1
-    container_name: cadvisor
-    ports:
-      - "8080:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    networks:
-      - monitoring-net
-    privileged: true
-    devices:
-      - /dev/kmsg:/dev/kmsg
+    # TODO: Configure the cAdvisor service
+    # HINT: Use gcr.io/cadvisor/cadvisor:v0.47.1 as the image
+    # TODO: Configure ports for cAdvisor
+    # HINT: Map port 8080
+    # TODO: Configure volumes for cAdvisor
+    # HINT: Mount rootfs, /var/run, /sys, /var/lib/docker, and /dev/disk as read-only
+    # TODO: Configure networks for cAdvisor
+    # HINT: Connect to the monitoring-net network
+    # TODO: Set privileged mode for cAdvisor
+    # HINT: Use privileged: true and map /dev/kmsg
 
 networks:
   monitoring-net:

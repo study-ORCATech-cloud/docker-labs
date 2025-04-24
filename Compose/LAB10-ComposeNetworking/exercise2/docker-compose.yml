@@ -2,48 +2,38 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    image: networking-demo-frontend
-    ports:
-      - "8000:8000"
-    environment:
-      - BACKEND_HOST=backend
-      - BACKEND_PORT=8000
-    volumes:
-      - ./frontend:/app
-    depends_on:
-      - backend
-    networks:
-      - frontend-network
-    # Frontend can only connect to backend via frontend-network
+    # TODO: Build the frontend service
+    # HINT: Use the build directive to point to ./frontend
+    # TODO: Configure ports for the frontend service
+    # HINT: Map port 8000 to container port 8000
+    # TODO: Configure environment variables for the frontend service
+    # HINT: Set BACKEND_HOST to backend and BACKEND_PORT to 8000
+    # TODO: Configure volumes for the frontend service
+    # HINT: Mount ./frontend to /app
+    # TODO: Configure service dependencies for the frontend service
+    # HINT: Depends on backend
+    # TODO: Configure networks for the frontend service
+    # HINT: Connect to the frontend-network
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    image: networking-demo-backend
-    environment:
-      - MONGO_HOST=db
-      - MONGO_PORT=27017
-      - MONGO_DB=networkdemo
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - db
-    networks:
-      - frontend-network
-      - backend-network
-    # Backend is connected to both frontend and database networks
+    # TODO: Build the backend service
+    # HINT: Use the build directive to point to ./backend
+    # TODO: Configure environment variables for the backend service
+    # HINT: Set MONGO_HOST to db, MONGO_PORT to 27017, and MONGO_DB to networkdemo
+    # TODO: Configure volumes for the backend service
+    # HINT: Mount ./backend to /app
+    # TODO: Configure service dependencies for the backend service
+    # HINT: Depends on db
+    # TODO: Configure networks for the backend service
+    # HINT: Connect to both frontend-network and backend-network
 
   db:
-    image: mongo:5.0
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - backend-network
-    # Database is only accessible from backend via backend-network
+    # TODO: Configure the database service
+    # HINT: Use mongo:5.0 as the image
+    # TODO: Configure volumes for the database service
+    # HINT: Use a named volume for data
+    # TODO: Configure networks for the database service
+    # HINT: Connect to the backend-network
 
 networks:
   frontend-network:

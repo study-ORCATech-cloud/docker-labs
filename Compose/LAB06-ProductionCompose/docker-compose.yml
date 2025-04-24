@@ -1,29 +1,27 @@
 version: '3.8'
 
 services:
+  # TODO: Configure the base web service that will be shared across environments
+  # HINT: Only include configuration common to all environments
   web:
     build: ./app
-    image: lab06-web:latest
-    depends_on:
-      - redis
-    networks:
-      - app-network
-    ports:
-      - "5000:5000"
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+    # TODO: Add appropriate image name and tag
+    # TODO: Configure dependencies
+    # TODO: Configure networks
+    # TODO: Configure ports
+    # TODO: Configure environment variables
 
+    # TODO: Configure the base Redis service that will be shared across environments
+    # HINT: Only include configuration common to all environments
   redis:
-    image: redis:6.2-alpine
-    networks:
-      - app-network
-    volumes:
-      - redis-data:/data
+    # TODO: Specify the Redis image
+    # TODO: Configure networks
+    # TODO: Configure volume mounts
 
-networks:
-  app-network:
-    driver: bridge
+    # TODO: Define the network that will be used across environments
+    # HINT: Use a bridge network for local development and testing
+networks: # TODO: Define your network configuration
 
-volumes:
-  redis-data:
+# TODO: Define volumes for persistent data that will be used across environments
+# HINT: Use named volumes to make data persistent between container restarts
+volumes: # TODO: Define your volumes

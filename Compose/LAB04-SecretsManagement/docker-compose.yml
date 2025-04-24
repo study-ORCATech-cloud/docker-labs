@@ -6,10 +6,16 @@ version: '3.8'
 services:
   # Exercise 1: Demonstrates insecure secrets handling
   insecure-app:
+    # TODO: Build the insecure app service
+    # HINT: Use the build directive to point to ./exercise1
     build: ./exercise1
     container_name: secrets-insecure
+
+    # TODO: Configure ports for the insecure app
+    # HINT: Map port 8001 to container port 8000
     ports:
       - "8001:8000"
+
     # TODO: Notice how secrets are exposed in environment variables
     # HINT: This is insecure and demonstrates what NOT to do
     environment:
@@ -18,23 +24,36 @@ services:
       - DB_PASSWORD=insecure_password_123
       - API_KEY=1234567890abcdef
       - DEBUG=true
+
+    # TODO: Configure networks for the insecure app
+    # HINT: Connect to the secrets-net network
     networks:
       - secrets-net
 
   # Exercise 2: Implements file-based secrets
   file-secrets-app:
+    # TODO: Build the file-based secrets app service
+    # HINT: Use the build directive to point to ./exercise2
     build: ./exercise2
     container_name: secrets-file-based
+
+    # TODO: Configure ports for the file-based secrets app
+    # HINT: Map port 8002 to container port 8000
     ports:
       - "8002:8000"
+
     # TODO: Configure only non-sensitive environment variables here
     # HINT: Sensitive data should be in the mounted secrets volume
     environment:
       - APP_NAME=File-Based Secrets Demo
+
     # TODO: Configure a volume mount for secrets
     # HINT: Mount the secrets directory as read-only at /run/secrets
     volumes:
       - ./exercise2/secrets:/run/secrets:ro
+
+    # TODO: Configure networks for the file-based secrets app
+    # HINT: Connect to the secrets-net network
     networks:
       - secrets-net
 
@@ -46,21 +65,32 @@ services:
 
   # Exercise 4: Implements secure alternatives for Compose
   secure-app:
+    # TODO: Build the secure app service
+    # HINT: Use the build directive to point to ./exercise4
     build: ./exercise4
     container_name: secrets-secure
+
+    # TODO: Configure ports for the secure app
+    # HINT: Map port 8004 to container port 8000
     ports:
       - "8004:8000"
+
     # TODO: Configure environment variables (non-sensitive only)
     # HINT: Only include app configuration, not secrets
     environment:
       - APP_NAME=Secure Secrets Demo
       - APP_ENV=production
+
     # TODO: Configure a volume mount for the secrets directory
     # HINT: Mount as read-only to prevent container from modifying secrets
     volumes:
       - ./exercise4/secrets:/app/secrets:ro
+
+    # TODO: Configure networks for the secure app
+    # HINT: Connect to the secrets-net network
     networks:
       - secrets-net
+
     # TODO: Configure the command to run the secrets manager before the app
     # HINT: The secrets manager should decrypt and load secrets before running the app
     command: [ "python", "secrets_manager.py", "--run", "app.py" ]

@@ -1,60 +1,55 @@
-# Multi-stage build for production-ready Python application
-FROM python:3.9-slim as builder
+# TODO: Implement a multi-stage build for a production-ready application
+# HINT: Use a builder stage for dependencies and a runtime stage for the final image
 
-WORKDIR /app
+# First stage
+# TODO: Choose a base image for the builder stage
+# HINT: Use a Python image appropriate for building dependencies
 
-# Install build dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc libc-dev && \
-    rm -rf /var/lib/apt/lists/*
+# TODO: Set up the working directory
+# HINT: Create a dedicated directory for the application
 
-# Copy requirements first to leverage Docker cache
-COPY requirements.txt .
+# TODO: Install build dependencies needed for compiling packages
+# HINT: Only install what's absolutely necessary and clean up afterwards
 
-# Install dependencies into a virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir wheel && \
-    pip install --no-cache-dir -r requirements.txt
+# TODO: Leverage Docker layer caching by separating dependencies from code
+# HINT: Copy and install requirements before copying application code
 
-# Second stage: runtime
-FROM python:3.9-slim
+# TODO: Set up a virtual environment for isolation and cleaner dependencies
+# HINT: Create and activate a Python virtual environment
 
-# Create non-root user for security
-RUN groupadd -g 1000 appuser && \
-    useradd -u 1000 -g appuser -s /bin/bash -m appuser
+# Second stage
+# TODO: Create a minimal runtime image using multi-stage build
+# HINT: Start a new stage with a clean base image
 
-# Install runtime dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/*
+# TODO: Implement security best practices for containers
+# HINT: Create and use a non-root user for running the application
 
-WORKDIR /app
+# TODO: Install only runtime dependencies needed for the application
+# HINT: Install minimal packages required for the application to run
 
-# Copy virtual env from builder stage
-COPY --from=builder /opt/venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
+# TODO: Set up the working directory
+# HINT: Create a dedicated directory for the application
 
-# Copy application code
-COPY . .
+# TODO: Copy artifacts from the builder stage
+# HINT: Only copy what's needed from the builder stage
 
-# Create directory for logs with proper permissions
-RUN mkdir -p /app/logs && \
-    chown -R appuser:appuser /app
+# TODO: Copy application code into the image
+# HINT: Copy all necessary application files
 
-# Switch to non-root user
-USER appuser
+# TODO: Configure proper permissions and directories
+# HINT: Create necessary directories and set appropriate permissions
 
-# Set proper Python path
-ENV PYTHONPATH=/app
+# TODO: Configure the container to run as a non-root user
+# HINT: Switch to the previously created non-root user
 
-# Default environment variable
-ARG APP_ENV=development
-ENV APP_ENV=${APP_ENV}
+# TODO: Set environment variables for the application
+# HINT: Configure the Python path and other necessary environment variables
 
-# Expose the port
-EXPOSE 5000
+# TODO: Set build arguments for environment configuration
+# HINT: Allow customization of the environment at build time
 
-# Default command - will be overridden by docker-compose
-CMD ["gunicorn", "--workers=4", "--bind=0.0.0.0:5000", "app:app"] 
+# TODO: Expose the port the application will run on
+# HINT: Document the port that should be published
+
+# TODO: Define the command to start the application
+# HINT: Use a production-ready server like Gunicorn 

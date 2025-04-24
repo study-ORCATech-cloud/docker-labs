@@ -4,7 +4,6 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-# Environment variables
 PORT = os.environ.get("PORT", "5000")
 
 
@@ -29,4 +28,4 @@ def get_message_fail():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT) 

@@ -3,9 +3,18 @@ version: '3.8'
 services:
   # Client service that connects to API
   client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
+    # TODO: Build the client service
+    # HINT: Use the build directive to point to ./client
+    # TODO: Configure ports for the client service
+    # HINT: Map port 8000 to container port 8000
+    # TODO: Configure environment variables for the client service
+    # HINT: Set API_HOST to api, API_ALIAS to api-service, and API_PORT to 8000
+    # TODO: Configure volumes for the client service
+    # HINT: Mount ./client to /app
+    # TODO: Configure service dependencies for the client service
+    # HINT: Depends on api-1, api-2, and api-3
+    # TODO: Configure networks for the client service
+    # HINT: Connect to the app-network
     image: service-discovery-client
     ports:
       - "8000:8000"
@@ -24,6 +33,14 @@ services:
 
   # API Service Instance 1
   api-1:
+    # TODO: Build the API service instance 1
+    # HINT: Use the build directive to point to ./api
+    # TODO: Configure environment variables for API service instance 1
+    # HINT: Set INSTANCE_ID to 001
+    # TODO: Configure volumes for API service instance 1
+    # HINT: Mount ./api to /app
+    # TODO: Configure networks for API service instance 1
+    # HINT: Connect to the app-network with aliases api and api-service
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -41,6 +58,14 @@ services:
 
     # API Service Instance 2
   api-2:
+    # TODO: Build the API service instance 2
+    # HINT: Use the build directive to point to ./api
+    # TODO: Configure environment variables for API service instance 2
+    # HINT: Set INSTANCE_ID to 002
+    # TODO: Configure volumes for API service instance 2
+    # HINT: Mount ./api to /app
+    # TODO: Configure networks for API service instance 2
+    # HINT: Connect to the app-network with aliases api and api-service
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -58,6 +83,14 @@ services:
 
     # API Service Instance 3
   api-3:
+    # TODO: Build the API service instance 3
+    # HINT: Use the build directive to point to ./api
+    # TODO: Configure environment variables for API service instance 3
+    # HINT: Set INSTANCE_ID to 003
+    # TODO: Configure volumes for API service instance 3
+    # HINT: Mount ./api to /app
+    # TODO: Configure networks for API service instance 3
+    # HINT: Connect to the app-network with aliases api and api-service
     build:
       context: ./api
       dockerfile: Dockerfile

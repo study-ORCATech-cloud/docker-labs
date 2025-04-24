@@ -2,19 +2,15 @@ version: '3.8'
 
 # Development overrides - automatically applied with docker compose up
 services:
+  # TODO: Configure development-specific settings for the web service
+  # HINT: Add volume mounts for local development and debugging tools
   web:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    volumes:
-      - ./app:/app
-    ports:
-      - "5000:5000"
-    environment:
-      - APP_ENV=development
-      - FLASK_DEBUG=1
-    command: python app.py
+    # TODO: Configure build context and Dockerfile
+    # TODO: Add volume mounts for live code reloading
+    # TODO: Configure port mapping
+    # TODO: Set development-specific environment variables
+    # TODO: Override the command for development mode
 
-  redis:
-    ports:
-      - "6379:6379" # Exposed for development debugging 
+  # TODO: Configure development-specific settings for Redis
+  # HINT: Expose ports for easy debugging and monitor Redis activity
+  redis: # TODO: Expose Redis port for development debugging

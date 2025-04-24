@@ -1,11 +1,17 @@
-FROM python:3.9-slim
+# TODO: Choose a base image for the web service
+# HINT: Use a lightweight Python image
 
-WORKDIR /app
+# TODO: Set up the working directory for the application
+# HINT: Create a dedicated directory for the application
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# TODO: Optimize Docker layer caching for dependencies
+# HINT: Copy and install requirements before copying application code
 
-COPY . .
+# TODO: Copy application files into the container
+# HINT: Copy all necessary files to run the Flask application
 
-EXPOSE 5000
-CMD ["python", "app.py"] 
+# TODO: Configure the container to expose the appropriate port
+# HINT: Make sure the port matches what's used in the application
+
+# TODO: Define the command to start the application
+# HINT: Use Python to run the application file 

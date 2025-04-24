@@ -1,19 +1,22 @@
 version: '3.8'
 
 services:
+  # TODO: Configure the Nexus Repository Manager container
+  # HINT: Use the sonatype/nexus3 image to set up a private Docker registry
   nexus:
-    image: sonatype/nexus3:latest
-    container_name: nexus
-    restart: unless-stopped
-    ports:
-      - "8081:8081"
-      - "8082:8082"
-    volumes:
-      - nexus-data:/nexus-data
-    environment:
-      # Disables random admin password, password will be: 'admin123', username: 'admin', if not disabled password will be in 'nexus-data/admin.password'
-      - NEXUS_SECURITY_RANDOMPASSWORD=false
+    # TODO: Specify the Nexus image
+    # TODO: Add a container name
+    # TODO: Configure restart policy
 
-volumes:
-  nexus-data:
-    driver: local
+    # TODO: Configure ports for the Nexus UI and Docker registry
+    # HINT: Expose port 8081 for the Nexus UI and 8082 for the Docker registry
+
+    # TODO: Configure persistent storage for Nexus data
+    # HINT: Use a named volume to ensure data is preserved across container restarts
+
+    # TODO: Configure Nexus environment variables
+    # HINT: Set NEXUS_SECURITY_RANDOMPASSWORD to false for predictable admin password
+
+    # TODO: Define volumes for persistent Nexus data
+    # HINT: Create a named volume for storing repository data
+volumes: # TODO: Define a volume for Nexus data storage

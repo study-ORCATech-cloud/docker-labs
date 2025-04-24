@@ -2,34 +2,32 @@ version: '3.8'
 
 services:
   web:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    image: networking-demo-web
-    ports:
-      - "8000:8000"
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    volumes:
-      - ./app:/app
-    depends_on:
-      - redis
-    # Initially, no custom network is defined
-    # Services use the default network created by Compose
+    # TODO: Build the web service
+    # HINT: Use the build directive to point to ./app
+    # TODO: Configure ports for the web service
+    # HINT: Map port 8000 to container port 8000
+    # TODO: Configure environment variables for the web service
+    # HINT: Set REDIS_HOST to redis and REDIS_PORT to 6379
+    # TODO: Configure volumes for the web service
+    # HINT: Mount ./app to /app
+    # TODO: Configure service dependencies for the web service
+    # HINT: Depends on redis
+    # TODO: Configure networks for the web service
+    # HINT: Use the default network or define a custom one
 
   redis:
-    image: redis:6.2-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
+    # TODO: Configure the Redis service
+    # HINT: Use redis:6.2-alpine as the image
+    # TODO: Configure ports for the Redis service
+    # HINT: Map port 6379 to container port 6379
+    # TODO: Configure volumes for the Redis service
+    # HINT: Use a named volume for data
 
 volumes:
   redis-data:
 
-    # Networks section is commented out initially
-    # Uncomment and modify for custom network configuration
+    # TODO: Define networks if needed
+    # HINT: Uncomment and modify for custom network configuration
     #
     # networks:
     #   app-network:
