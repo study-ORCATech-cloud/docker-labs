@@ -27,10 +27,20 @@ In this lab, you will:
 - Completion of LAB01-GettingStarted, LAB02-BuildingImages, LAB03-Volumes, and LAB04-Layers
 - Basic understanding of Linux command line
 
+## Important Instructions
+
+This lab is designed for hands-on learning. You are expected to:
+- Implement solutions yourself for each debugging issue
+- Practice using various debugging tools and commands
+- Work through the problems systematically
+- Document your debugging process and findings
+
+Do not look for ready-made solutions online - the goal is to develop your debugging skills by working through the issues yourself.
+
 ## Lab Projects
 
 This lab includes two examples:
-1. **debug-app**: A Flask application with intentional bugs to debug
+1. **debug-app**: A Flask application with intentional bugs for you to find and fix
 2. **debug-tools**: Specialized debugging tools and utilities for Docker
 
 ## Lab Tasks
@@ -190,11 +200,13 @@ Navigate to the `debug-app` directory:
 cd debug-app
 ```
 
-Follow these steps:
-1. Build and run the buggy Flask application
-2. Identify the issues using Docker debugging techniques
-3. Fix the issues in the Dockerfile and application code
-4. Verify the fixes by rebuilding and running the container
+TODO:
+1. Read the README.md file in the debug-app directory for specific instructions
+2. Build and run the buggy Flask application
+3. Use Docker debugging techniques to identify all 10 issues in the app
+4. Implement your own solutions for each issue in the Dockerfile and app.py
+5. Test your fixes to ensure they resolve the problems
+6. Document which debugging techniques helped you find each issue
 
 ### Task 10: Using Advanced Debugging Tools
 
@@ -204,78 +216,55 @@ Navigate to the `debug-tools` directory:
 cd ../debug-tools
 ```
 
-Explore specialized debugging tools:
-
-1. **Dive**: Analyze image layers
-   ```bash
-   docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest <image_name>
-   ```
-
-2. **Docker Debug**: Mount debugging tools in a container
-   ```bash
-   docker run --rm -it --pid=container:<container_id> nicolaka/netshoot
-   ```
-
-3. **Portainer**: Web-based Docker management
-   ```bash
-   docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce
-   ```
+TODO:
+1. Review the README.md in the debug-tools directory
+2. Try each of the debugging tools provided
+3. Use the appropriate tools to debug the following scenarios:
+   - A container with resource constraints
+   - A container with networking issues
+   - A container that exits unexpectedly
+4. Document which tools were most effective for each scenario
 
 ## Common Issues and Solutions
 
+Here are some typical issues you might encounter and approaches to debug them:
+
 ### Container Exits Immediately
-- Check logs: `docker logs <container_id>`
-- Override entrypoint to debug: `docker run -it --entrypoint /bin/sh <image_name>`
-- Ensure a foreground process is running in the container
+TODO: Implement debugging steps for this issue using the techniques learned
 
 ### Container Cannot Connect to Network
-- Verify container IP: `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container_id>`
-- Check network configuration: `docker network inspect <network_name>`
-- Test network from inside: `docker exec <container_id> ping <destination>`
+TODO: Implement debugging steps for this issue using the techniques learned
 
 ### Volume Permission Issues
-- Check volume mount: `docker inspect -f '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{end}}' <container_id>`
-- Verify permissions: `docker exec <container_id> ls -la <directory>`
-- Fix permissions in Dockerfile or at runtime
+TODO: Implement debugging steps for this issue using the techniques learned
 
 ### Application Performance Issues
-- Monitor resource usage: `docker stats <container_id>`
-- Check for resource constraints in your Docker run command
-- Analyze application logs for slow operations
+TODO: Implement debugging steps for this issue using the techniques learned
 
 ### Image Build Failures
-- Review error messages in the build output
-- Check for issues with the Dockerfile syntax
-- Ensure build context doesn't include unnecessary large files
+TODO: Implement debugging steps for this issue using the techniques learned
 
-## Best Practices for Dockerized Applications
+## Testing Your Understanding
 
-1. **Proper Logging**: Configure applications to log to stdout/stderr
-2. **Health Checks**: Implement Docker health checks
-3. **Graceful Shutdown**: Handle SIGTERM signals properly
-4. **Single Concern**: One primary process per container
-5. **Non-root User**: Run containers as non-root users
-6. **Minimal Images**: Use minimal base images to reduce complexity
-7. **Runtime Configuration**: Use environment variables for configuration
+After completing the lab exercises, you should be able to:
+
+1. Explain the different container states and what they indicate
+2. Use Docker logs to troubleshoot application issues
+3. Inspect container configuration to identify misconfigurations
+4. Use interactive debugging to explore container environments
+5. Apply appropriate debugging techniques for different types of issues
+6. Implement fixes for common Docker problems
 
 ## Clean Up
 
+Don't forget to clean up resources after completing the lab:
+
 ```bash
-# Remove containers
-docker rm -f $(docker ps -aq)
-
-# Remove images
-docker rmi <image_name>
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi debug-app:buggy debug-app:fixed
 ```
-
-## Real-World Applications
-
-These debugging techniques are essential for:
-- Production container troubleshooting
-- CI/CD pipeline issue resolution
-- Microservices architecture maintenance
-- Container orchestration management
 
 ## Next Steps
 
-Congratulations on completing the Docker Basics lab series! You can now move on to the Docker Compose labs to learn about multi-container applications and orchestration. 
+After mastering debugging techniques in this lab, you'll be ready to move on to more advanced Docker topics in the next labs. 

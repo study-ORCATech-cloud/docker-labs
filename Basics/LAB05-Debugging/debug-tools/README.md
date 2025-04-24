@@ -2,196 +2,158 @@
 
 This directory contains information about specialized tools that can help with debugging Docker containers.
 
+## Overview
+
+As a DevOps engineer, you need to be familiar with a variety of debugging tools to diagnose and resolve issues with containerized applications. This directory contains scripts and instructions for using various debugging tools to troubleshoot Docker containers.
+
+## Learning Objectives
+
+- Learn how to use specialized debugging tools for Docker
+- Understand when to use each tool based on the problem
+- Gain hands-on experience with real-world debugging scenarios
+- Develop a systematic approach to container troubleshooting
+
 ## Available Tools
 
 ### 1. Dive - Image Layer Analysis
 
 [Dive](https://github.com/wagoodman/dive) is a tool for exploring Docker images, layer contents, and discovering ways to shrink the size of your Docker/OCI image.
 
-Run Dive against any image:
-
+**Exercise 1**: Analyze the debug-app image for inefficient layers
 ```bash
 docker run --rm -it \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  wagoodman/dive:latest <image_name>
+  wagoodman/dive:latest debug-app:buggy
 ```
 
-Example:
-```bash
-docker run --rm -it \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  wagoodman/dive:latest nginx:latest
-```
+**TODO**: Document which layers contribute most to the image size and identify potential optimizations.
 
 ### 2. Netshoot - Network Debugging Toolkit
 
 [Netshoot](https://github.com/nicolaka/netshoot) is a container with a set of networking tools useful for troubleshooting issues with Docker containers.
 
-Execute network diagnostics inside a running container:
-
+**Exercise 2**: Debug network connectivity issues
 ```bash
+# First, run the debug-app
+docker run -d --name network-test debug-app:buggy
+
+# Then, attach netshoot to analyze its network
 docker run --rm -it \
-  --network container:<container_name> \
+  --network container:network-test \
   nicolaka/netshoot
 ```
 
-Analyze a container's network namespace:
+**TODO**: Use the networking tools in netshoot to perform:
+- Hostname resolution tests
+- Port connectivity checks
+- Network latency analysis
+- Document your findings and methodology
 
+### 3. Resource Monitoring
+
+Resource constraints are a common source of container problems.
+
+**Exercise 3**: Monitor container resource usage
+
+1. Run the monitor.sh script:
 ```bash
-docker run --rm -it \
-  --pid container:<container_name> \
-  nicolaka/netshoot
+chmod +x monitor.sh
+./monitor.sh
 ```
 
-### 3. Portainer - Container Management UI
-
-[Portainer](https://www.portainer.io/) provides a graphical interface for Docker management.
-
-Run Portainer:
-
+2. In another terminal, run a container with resource constraints:
 ```bash
-docker run -d -p 9000:9000 \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  portainer/portainer-ce
+docker run -d --name resource-test --memory=50m --cpu-shares=50 debug-app:buggy
 ```
 
-Access the UI at http://localhost:9000
+**TODO**: Document the resource usage patterns you observe. What happens when the container reaches its memory limit?
 
-### 4. cAdvisor - Container Resource Monitoring
+### 4. Container Health Checks
 
-[cAdvisor](https://github.com/google/cadvisor) provides container users with resource usage and performance metrics.
+Healthchecks help detect when a container is not functioning properly.
 
-Run cAdvisor:
+**Exercise 4**: Implement and test container health checks
 
+1. Run the healthcheck.sh script on a container:
 ```bash
-docker run \
-  --volume=/:/rootfs:ro \
-  --volume=/var/run:/var/run:ro \
-  --volume=/sys:/sys:ro \
-  --volume=/var/lib/docker/:/var/lib/docker:ro \
-  --publish=8080:8080 \
-  --detach=true \
-  --name=cadvisor \
-  gcr.io/cadvisor/cadvisor:latest
+chmod +x healthcheck.sh
+./healthcheck.sh debug-container
 ```
 
-Access the UI at http://localhost:8080
+**TODO**: Create your own improved version of the healthcheck.sh script that includes additional checks:
+- File system usage check
+- Check for error patterns in logs
+- Application-specific status checks
 
-### 5. Docker Logs with JSON Formatter
+### 5. Network Inspector
 
-Parse Docker logs in JSON format:
+Networking issues are among the most complex to debug in containerized environments.
 
+**Exercise 5**: Debug container networking
+
+1. Run the network-inspector.sh script:
 ```bash
-# For pretty-printing JSON logs
-docker logs <container_id> | jq
+chmod +x network-inspector.sh
+./network-inspector.sh debug-container
 ```
 
-Install jq (JSON parser):
-- Linux: `apt-get install jq` or `yum install jq`
-- macOS: `brew install jq`
-- Windows: `scoop install jq`
+**TODO**: Create a test setup with multiple containers in different networks and use the network inspector to map the connectivity between them. Document your findings.
 
-### 6. Docker Debug Container
+### 6. Clean-Exit Script
 
-Create a debugging container to inspect files inside volumes:
+Managing exited containers is an important housekeeping task.
 
+**Exercise 6**: Clean up exited containers and analyze failure patterns
+
+1. Run the clean-exit.sh script:
 ```bash
-docker run -it --rm \
-  --volumes-from <target_container> \
-  alpine sh
+chmod +x clean-exit.sh
+./clean-exit.sh
 ```
 
-### 7. Docker Events Watcher
+**TODO**: Enhance the clean-exit.sh script to:
+- Categorize containers by exit code
+- Save logs from exited containers before removing them
+- Create a summary report of container failures
 
-Monitor Docker events in real-time:
+## Advanced Debugging Techniques
 
-```bash
-docker events --filter 'container=<container_name>'
-```
+### Creating a Custom Debugging Container
 
-Monitor all events:
+**Exercise 7**: Create your own debugging container
 
-```bash
-docker events
-```
+**TODO**: Create a Dockerfile for a custom debugging container that includes:
+- Network troubleshooting tools
+- Disk and memory analysis utilities
+- Log parsing tools
+- A simple web interface to view results
 
-### 8. nsenter - Access Container Namespaces
+### Systematic Debugging Approach
 
-On Linux, access the namespaces of a running container:
+Develop a systematic approach to debugging Docker containers:
 
-```bash
-# Get container PID
-PID=$(docker inspect --format '{{.State.Pid}}' <container_id>)
+1. **Gather information**: Collect logs, inspect configuration, check resource usage
+2. **Form a hypothesis**: Based on the evidence, identify potential causes
+3. **Test your hypothesis**: Make a targeted change to test your theory
+4. **Implement a solution**: Apply a permanent fix
+5. **Verify and document**: Ensure the fix works and document the process
 
-# Enter all namespaces
-sudo nsenter -t $PID -a
+**TODO**: Apply this approach to debug the Flask application from the debug-app directory and document each step in your process.
 
-# Enter only network namespace
-sudo nsenter -t $PID -n
-```
+## Assessment Criteria
 
-## Advanced Debugging Scripts
+You'll be assessed on:
 
-### Resource Usage Monitor
+1. Your ability to use the debugging tools effectively
+2. The improvements you make to the provided scripts
+3. Your systematic approach to debugging
+4. The quality of your documentation and findings
 
-```bash
-#!/bin/bash
-# monitor.sh - Container resource monitoring
-while true; do 
-  echo "===== $(date) ====="
-  docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"
-  sleep 5
-done
-```
+## Additional Resources
 
-### Container Healthcheck
-
-```bash
-#!/bin/bash
-# healthcheck.sh - Check container health
-CONTAINER=$1
-
-if [ -z "$CONTAINER" ]; then
-  echo "Usage: $0 <container_name>"
-  exit 1
-fi
-
-echo "Container: $CONTAINER"
-echo "Status: $(docker inspect -f '{{.State.Status}}' $CONTAINER)"
-echo "Running: $(docker inspect -f '{{.State.Running}}' $CONTAINER)"
-echo "Exitcode: $(docker inspect -f '{{.State.ExitCode}}' $CONTAINER)"
-echo "Health: $(docker inspect -f '{{.State.Health.Status}}' $CONTAINER 2>/dev/null || echo "No health check")"
-echo "Logs (last 5 lines):"
-docker logs --tail 5 $CONTAINER
-```
-
-## Best Practices
-
-1. **Always enable Docker logging**:
-   ```bash
-   # Set log driver to json-file with size limits
-   docker run --log-driver=json-file --log-opt max-size=10m --log-opt max-file=3 <image>
-   ```
-
-2. **Include debugging tools in development images**:
-   ```dockerfile
-   # In your Dockerfile for development
-   RUN apt-get update && apt-get install -y \
-       curl \
-       procps \
-       net-tools \
-       iproute2 \
-       dnsutils \
-       && rm -rf /var/lib/apt/lists/*
-   ```
-
-3. **Use container labels for organized debugging**:
-   ```bash
-   docker run --label "environment=dev" --label "debug=true" <image>
-   
-   # Later filter by these labels
-   docker ps --filter "label=debug=true"
-   ```
+- [Docker Debugging Best Practices](https://docs.docker.com/engine/reference/commandline/container_inspect/)
+- [Docker Troubleshooting Guide](https://success.docker.com/article/troubleshooting-container-networking)
+- [Container Performance Analysis](https://docs.docker.com/config/containers/resource_constraints/)
 
 ## Resources
 

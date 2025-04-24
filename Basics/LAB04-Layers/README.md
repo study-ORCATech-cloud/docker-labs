@@ -27,12 +27,22 @@ In this lab, you will:
 - Completion of LAB01-GettingStarted, LAB02-BuildingImages, and LAB03-Volumes
 - Basic understanding of Dockerfiles
 
+## Important Instructions
+
+This lab is designed for hands-on learning. You are expected to:
+- Implement solutions yourself rather than copying from external sources
+- Write your own code for each TODO item in the exercises
+- Document your analysis and findings in your own words
+- Test your implementations to see the effects of your optimizations
+
+The goal is to develop your skills in creating efficient Docker images by understanding the underlying principles of Docker's layered architecture.
+
 ## Lab Projects
 
 This lab includes three example projects:
 
-1. **single-stage**: A simple Python application with a basic, unoptimized Dockerfile
-2. **multi-stage**: The same application with an optimized multi-stage Dockerfile
+1. **single-stage**: A simple Python application with a basic, unoptimized Dockerfile that you'll improve
+2. **multi-stage**: The same application with a template for implementing multi-stage builds
 3. **analysis**: Tools and examples for analyzing Docker image layers
 
 ## Lab Tasks
@@ -50,25 +60,29 @@ Other instructions like `WORKDIR`, `EXPOSE`, and `VOLUME` also don't create sepa
 
 ### Task 2: Build and Analyze a Basic Image
 
-Navigate to the `single-stage` directory:
+Navigate to the `single-stage` directory and explore it:
 
 ```bash
-cd examples/single-stage
+cd single-stage
 ```
 
-Build the image:
-
-```bash
-docker build -t layers-demo:unoptimized .
-```
-
-Analyze the layers:
-
-```bash
-docker history layers-demo:unoptimized
-```
-
-Notice how many layers are created and their sizes.
+TODO:
+1. Review the `Dockerfile` and identify inefficient practices
+2. Build the unoptimized image:
+   ```bash
+   docker build -t layers-demo:unoptimized .
+   ```
+3. Analyze the layers:
+   ```bash
+   docker history layers-demo:unoptimized
+   ```
+4. Complete the TODOs in the `Dockerfile` to optimize it - implement your own solutions!
+5. Build your optimized version and compare results:
+   ```bash
+   docker build -t layers-demo:optimized-by-you .
+   docker history layers-demo:optimized-by-you
+   docker images layers-demo:*
+   ```
 
 ### Task 3: Optimize with Multi-stage Builds
 
@@ -78,20 +92,18 @@ Navigate to the `multi-stage` directory:
 cd ../multi-stage
 ```
 
-Build the optimized image:
-
-```bash
-docker build -t layers-demo:optimized .
-```
-
-Analyze and compare with the unoptimized version:
-
-```bash
-docker history layers-demo:optimized
-docker images layers-demo:*
-```
-
-Notice the difference in size and number of layers.
+TODO:
+1. Review the multi-stage `Dockerfile` template and understand the included TODOs
+2. Implement your own solutions for each TODO item - don't just copy from examples
+3. Build your optimized image:
+   ```bash
+   docker build -t layers-demo:multi-stage .
+   ```
+4. Compare with the single-stage versions:
+   ```bash
+   docker history layers-demo:multi-stage
+   docker images layers-demo:*
+   ```
 
 ### Task 4: Analyze Image Details
 
@@ -101,19 +113,18 @@ Navigate to the `analysis` directory:
 cd ../analysis
 ```
 
-Use dive tool to analyze the images:
-
-```bash
-# Install dive tool (if not available)
-docker run --rm -it \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  wagoodman/dive:latest layers-demo:unoptimized
-
-# Analyze the optimized image
-docker run --rm -it \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  wagoodman/dive:latest layers-demo:optimized
-```
+TODO:
+1. Review the `Dockerfile` with intentional inefficiencies
+2. Create your own `layer_analysis.md` file to document your findings
+3. Build the unoptimized image:
+   ```bash
+   docker build -t analysis-demo:unoptimized .
+   ```
+4. Use the provided tools to analyze the image layers:
+   - For Windows: `layer-analysis-windows.bat analysis-demo:unoptimized`
+   - For Linux/Mac: `./dive-commands.sh analysis-demo:unoptimized`
+5. Create your own optimized version in `Dockerfile.optimized`
+6. Compare both images to measure your improvements
 
 ### Task 5: Apply Layer Optimization Techniques
 
@@ -127,13 +138,21 @@ Below are key optimization techniques to apply in your Dockerfiles:
 6. **Use specific base image tags** rather than 'latest'
 7. **Consider using Alpine-based images** for smaller footprints
 
+TODO:
+- Implement each of these techniques in your optimized Dockerfiles
+- Document the impact of each optimization
+
 ### Task 6: Implement Advanced Multi-stage Patterns
 
-Explore the `multi-stage` directory for examples of:
-- Separating build and runtime environments
-- Using the builder pattern
+Explore the `multi-stage` directory and implement:
+- Separation of build and runtime environments
+- Using the builder pattern properly
 - Copying only necessary artifacts
-- Leveraging base and target stages
+- Implementing proper security practices (non-root user, etc.)
+
+TODO:
+- Enhance your multi-stage Dockerfile to include security best practices
+- Experiment with different base images (full, slim, alpine) and compare
 
 ## Best Practices Summary
 
@@ -156,7 +175,8 @@ Optimized Docker images provide many advantages:
 ## Clean Up
 
 ```bash
-docker rmi layers-demo:unoptimized layers-demo:optimized
+docker rmi layers-demo:unoptimized layers-demo:optimized-by-you layers-demo:multi-stage
+docker rmi analysis-demo:unoptimized analysis-demo:optimized
 ```
 
 ## Next Steps

@@ -56,43 +56,59 @@ docker run -d -p 8080:5000 --name debug-container debug-app:buggy
    docker stats debug-container
    ```
 
-## Fix Checklist
+## TODO Checklist
 
-After identifying issues, fix them one by one:
+After identifying issues, implement fixes for each one:
 
-- [ ] Fix logging configuration
-- [ ] Fix port configuration mismatch
-- [ ] Fix the Dockerfile working directory
-- [ ] Fix API endpoint paths
-- [ ] Fix environment variable handling
-- [ ] Fix memory leak
-- [ ] Fix concurrency issues
-- [ ] Add proper error handling
-- [ ] Implement healthcheck
-- [ ] Fix performance bottlenecks
+- [ ] Fix the Dockerfile working directory issue (TODO 1)
+- [ ] Improve dependency installation (TODO 2)
+- [ ] Fix file copying in the Dockerfile (TODO 3)
+- [ ] Resolve port configuration mismatch (TODO 4)
+- [ ] Fix application execution path (TODO 5)
+- [ ] Implement container healthcheck (TODO 6)
+- [ ] Set required environment variables (TODO 7)
+- [ ] Create necessary log directories (TODO 8)
+- [ ] Fix logging configuration in the app (TODO 1 in app.py)
+- [ ] Resolve memory leak issues (TODO 2 in app.py)
+- [ ] Fix thread synchronization (TODO 3 in app.py)
+- [ ] Align port configuration with Dockerfile (TODO 4 in app.py)
+- [ ] Fix unreachable endpoints (TODO 5 in app.py)
+- [ ] Implement thread-safe operations (TODO 6 in app.py)
+- [ ] Add memory limits to prevent leaks (TODO 7 in app.py)
+- [ ] Add proper error handling (TODO 8 in app.py)
+- [ ] Fix blocking operations (TODO 9 in app.py)
+- [ ] Implement proper environment variable handling (TODO 10 in app.py)
 
-## Reference Solutions
+## Important Note
 
-For reference (after you've tried to fix the issues yourself), you can look at:
+You need to implement your own solutions for each issue. Don't copy solutions from external sources - the goal is to understand Docker debugging techniques and develop your problem-solving skills.
 
-- `fixed_app.py` - A corrected version of the application
-- `fixed_Dockerfile` - A corrected Dockerfile
-
-## Running the Fixed Application
+## Running Your Fixed Application
 
 After implementing your fixes, you should be able to build and run the application successfully:
 
 ```bash
-# Build the fixed image
-docker build -t debug-app:fixed -f your_fixed_Dockerfile .
+# Build your fixed image
+docker build -t debug-app:fixed .
 
-# Run the fixed container
+# Run your fixed container
 docker run -d -p 5000:5000 --name fixed-container debug-app:fixed
 
 # Test the endpoints
 curl http://localhost:5000/
 curl http://localhost:5000/health
 ```
+
+## Testing Your Solutions
+
+To verify your fixes are working:
+
+1. All endpoints should be accessible without errors
+2. The container should remain stable under load
+3. The application should handle errors gracefully
+4. The container should pass its healthcheck
+5. Logs should be written correctly
+6. The application should use resources efficiently
 
 ## Learning Objectives
 
