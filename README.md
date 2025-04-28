@@ -27,7 +27,9 @@ Each track contains 10 progressively challenging labs, each housed in its own fo
 
 ```bash
 Basics/LAB01-Getting-Started-With-Docker/
+Basics/LAB10-Advanced-CLI-Usage/
 Compose/LAB01-Service-Communication/
+Compose/LAB10-Advanced-Networking/
 Swarm/LAB01-Cluster-Deployment/
 Networking/LAB01-Container-Networking-Basics/
 Registry/LAB01-Private-Registry-Setup/
@@ -84,11 +86,11 @@ cd Swarm/LAB01-Cluster-Deployment/
 
 | Track | Focus |
 |------|-------|
-| Basics | Docker fundamentals: images, containers, volumes, best practices |
-| Compose | Orchestrating multi-container apps, scaling, resilience |
-| Swarm | Cluster deployment, service orchestration, HA design |
-| Networking | Networking types, security, service discovery, troubleshooting |
-| Registry | Private registries, security, automation, and management |
+| Basics | Docker fundamentals: images, containers, volumes, layers, resource constraints, best practices, Docker Hub and advanced CLI usage |
+| Compose | Multi-container orchestration, data persistence, environment configuration, secrets, scaling, monitoring, multi-stage builds and advanced networking |
+| Swarm | Cluster deployment, service orchestration, secrets management, high availability design and troubleshooting |
+| Networking | Networking types, security, service discovery, overlay networks, load balancing and debugging strategies |
+| Registry | Private registry deployment, authentication, security scanning, mirroring and multi-region setups |
 
 Labs are designed to simulate real-world DevOps scenarios and progressively build your expertise.
 
@@ -99,11 +101,11 @@ Labs are designed to simulate real-world DevOps scenarios and progressively buil
 The full lab list is available in the [ROADMAP.md](./ROADMAP.md) file.
 
 Tracks:
-- Docker Basics (10 Labs)
-- Docker Compose (10 Labs)
-- Docker Swarm (10 Labs)
-- Docker Networking (10 Labs)
-- Docker Registry (10 Labs)
+- Docker Basics (10 Labs): From installation to advanced CLI techniques
+- Docker Compose (10 Labs): From service communication to complex networking configurations
+- Docker Swarm (10 Labs): From cluster deployment to high-availability patterns
+- Docker Networking (10 Labs): From networking basics to encrypted communications
+- Docker Registry (10 Labs): From basic setup to multi-region deployments
 
 ---
 
