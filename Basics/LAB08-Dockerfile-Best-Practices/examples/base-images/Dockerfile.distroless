@@ -1,0 +1,21 @@
+FROM python:3.9-slim AS builder
+
+WORKDIR /app
+
+# Copy Python application and dependencies
+COPY app.py requirements.txt ./
+RUN chmod +x app.py
+
+FROM gcr.io/distroless/python3
+
+WORKDIR /app
+
+COPY --from=builder /app/app.py .
+COPY --from=builder /app/requirements.txt .
+
+EXPOSE 8080
+
+# The nonroot user is built into the distroless image
+USER nonroot:nonroot
+
+CMD ["app.py"] 

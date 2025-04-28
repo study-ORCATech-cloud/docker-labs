@@ -1,0 +1,20 @@
+# TODO: Create a build stage with an appropriate base image
+
+# TODO: Set working directory
+
+# TODO: Copy only the requirements file and install dependencies
+# to leverage Docker's build cache
+
+# TODO: Copy the rest of the application code
+
+# TODO: Create a runtime stage with a smaller base image
+
+# TODO: Set working directory in runtime stage
+
+# TODO: Copy only the necessary files from the build stage
+
+# TODO: Set up a non-root user for better security
+
+# TODO: Expose the application port
+
+# TODO: Set the command to run the application efficiently 

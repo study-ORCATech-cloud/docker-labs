@@ -1,0 +1,43 @@
+# Example CI/CD pipeline file (generic format)
+# This is an example for educational purposes only
+
+name: Build and Deploy Docker Image
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Build Docker image
+      run: |
+        docker build -t myapp:${{ github.sha }} .
+        
+    - name: Run tests
+      run: |
+        docker run myapp:${{ github.sha }} python -m unittest
+        
+    - name: Push to registry
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+        docker tag myapp:${{ github.sha }} myregistry/myapp:latest
+        docker tag myapp:${{ github.sha }} myregistry/myapp:${{ github.sha }}
+        docker push myregistry/myapp:latest
+        docker push myregistry/myapp:${{ github.sha }}
+
+# TODO: This CI/CD configuration has room for improvement:
+# TODO: No caching of Docker layers between builds
+# TODO: Rebuilds entire image for tests
+# TODO: No vulnerability scanning
+# TODO: Inefficient tagging strategy
+# TODO: No separation of build and push stages
+# TODO: No consideration for build-time arguments 

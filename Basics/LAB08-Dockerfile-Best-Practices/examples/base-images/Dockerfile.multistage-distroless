@@ -1,0 +1,31 @@
+# Build stage
+FROM python:3.9-slim AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy Python application and dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app.py ./
+RUN chmod +x app.py
+
+# Runtime stage
+FROM gcr.io/distroless/python3
+
+# Document the port the application uses
+EXPOSE 8080
+
+# Copy the Python application from the build stage
+COPY --from=builder /app/app.py /app/
+COPY --from=builder /app/requirements.txt /app/
+
+# Set working directory
+WORKDIR /app
+
+# Use non-root user for security (provided by the nonroot image)
+USER nonroot:nonroot
+
+# Set the command to run the application
+CMD ["app.py"] 

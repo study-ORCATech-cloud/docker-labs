@@ -1,0 +1,25 @@
+FROM python:3.9
+
+# TODO: Consider using a more specific tag version for security and reproducibility
+
+WORKDIR /app
+
+# Copy the entire application
+COPY . .
+
+# TODO: Consider copying only the requirements.txt first to leverage Docker's build cache
+
+# Install dependencies
+RUN pip install -r requirements.txt
+
+# TODO: Consider using pip install --no-cache-dir to reduce image size
+
+# Expose the application port
+EXPOSE 8080
+
+# TODO: Consider running as a non-root user for better security
+
+# Start the application
+CMD ["python", "app.py"]
+
+# TODO: Consider using a more efficient way to run the application in production (e.g., gunicorn) 

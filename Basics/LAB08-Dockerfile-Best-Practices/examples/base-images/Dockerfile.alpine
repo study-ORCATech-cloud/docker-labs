@@ -1,0 +1,18 @@
+FROM python:3.9-alpine
+
+WORKDIR /app
+
+# Install ca-certificates for HTTPS requests
+RUN apk --no-cache add ca-certificates
+
+# Copy Python application and dependencies
+COPY app.py requirements.txt ./
+RUN chmod +x app.py
+
+# Use a non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+EXPOSE 8080
+
+CMD ["python3", "app.py"] 

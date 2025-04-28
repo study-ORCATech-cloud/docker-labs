@@ -1,0 +1,33 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Set production environment variables
+ENV ENVIRONMENT=production
+ENV DEBUG=False
+ENV LOG_LEVEL=WARNING
+
+# Create a non-root user and switch to it
+RUN useradd -m appuser
+USER appuser
+
+# Expose production port
+EXPOSE 8080
+
+# Use gunicorn for production
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"]
+
+# TODO: This production Dockerfile works, but could be improved:
+# TODO: Consider using multi-stage builds to reduce image size
+# TODO: Implement proper secret management (not environment variables)
+# TODO: Add health checks for better monitoring
+# TODO: Consider using an even smaller base image
+# TODO: Set resource limits
+# TODO: Implement proper logging configuration 

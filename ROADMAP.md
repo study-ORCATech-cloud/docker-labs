@@ -1,152 +1,107 @@
-# Docker Labs: Container Technology Learning Roadmap
+# Docker Labs Roadmap
 
-Welcome to the **Docker Labs** repository — a comprehensive collection of hands-on exercises designed to build expertise in containerization technologies. These labs follow a progressive learning path from basic Docker concepts to advanced orchestration techniques.
+Welcome to the **Docker Labs Roadmap** — your structured guide to mastering Docker containerization, orchestration, networking, and registry management through a progressive learning path.
 
----
-
-## 📋 Repository Structure Roadmap
-
-The repository is organized into specialized tracks, each focusing on different aspects of container technology:
-
-```
-docker-labs/
-│
-├── Basics/                  # Fundamental Docker concepts
-├── Compose/                 # Multi-container orchestration with Docker Compose
-├── Swarm/                   # Container orchestration with Docker Swarm
-├── Networking/              # Docker networking concepts and implementation
-└── Registry/                # Private registry setup and management
-```
+Each track below builds skills step-by-step, from beginner concepts to advanced real-world practices.
 
 ---
 
-## 📅 Docker Labs Roadmap
+## 📚 Docker Basics Track (10 Labs)
 
-### ✅ Docker Basics Track (Completed)
-
-| Lab    | Title                  | Description                                          |
-|--------|------------------------|------------------------------------------------------|
-| LAB01  | Getting Started        | Docker installation and fundamental commands          |
-| LAB02  | Building Images        | Creating custom Docker images with Dockerfiles        |
-| LAB03  | Volumes                | Data persistence with Docker volumes                  |
-| LAB04  | Layers                 | Understanding image layers and optimization           |
-| LAB05  | Debugging              | Troubleshooting Docker containers and applications    |
-
-### ✅ Docker Compose Track (Completed)
-
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB01  | Service Communication       | Multi-container applications with network isolation         |
-| LAB02  | Volumes & Persistence       | Managing data persistence with Docker volumes              |
-| LAB03  | Environment Configuration   | Configuration management and environment variables         |
-| LAB04  | Secrets Management          | Working with secrets in Docker Compose                     |
-| LAB05  | Scaling Services            | Load balancing and scaling applications                    |
-| LAB06  | Production Compose          | Production-ready configurations with security and resource management |
-| LAB07  | Private Registry            | Setting up a private Docker registry using Nexus           |
-| LAB08  | Monitoring & Logging        | Setting up monitoring and logging for Compose applications |
-| LAB09  | Multi-Stage Builds          | Optimizing images with multi-stage builds in Compose       |
-| LAB10  | Compose Networking          | Advanced networking configurations in Docker Compose       |
-
-### ✅ Docker Swarm Track (Started)
-
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB01  | Cluster Deployment          | Initializing Swarm clusters and deploying services         |
-
-### ✅ Docker Networking Track (Started)
-
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB01  | Container Networking        | Network types and communication between containers         |
-
-### ✅ Docker Registry Track (Started)
-
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB01  | Private Registry            | Setting up and using a local Docker registry               |
+| Lab    | Title                             |
+|--------|-----------------------------------|
+| LAB01  | Getting-Started-With-Docker       |
+| LAB02  | Building-Custom-Images            |
+| LAB03  | Data-Persistence-With-Volumes     |
+| LAB04  | Understanding-Image-Layers        |
+| LAB05  | Debugging-Docker-Containers       |
+| LAB06  | Resource-Constraints              |
+| LAB07  | Docker-Logs-And-Events             |
+| LAB08  | Dockerfile-Best-Practices          |
+| LAB09  | Working-With-DockerHub             |
+| LAB10  | Advanced-CLI-Usage                 |
 
 ---
 
-## 🔜 Potential Future Labs
+## 📚 Docker Compose Track (10 Labs)
 
-### Docker Basics Track
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB06  | Resource Constraints        | Managing container CPU and memory limits                   |
-| LAB07  | Security                    | Container security best practices and scanning             |
-| LAB08  | Docker CLI Deep Dive        | Advanced Docker command-line usage and patterns            |
-
-### Docker Compose Track
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB11  | Compose with Swarm          | Using Docker Compose with Swarm mode for orchestration     |
-| LAB12  | Health Checks & Resilience  | Implementing health checks and resilient applications      |
-| LAB13  | CI/CD Pipeline Integration  | Integrating Docker Compose into CI/CD workflows            |
-
-### Docker Swarm Track
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB02  | Services & Stacks           | Deploying applications as Swarm services and stacks        |
-| LAB03  | Secrets Management          | Managing sensitive data within Swarm cluster               |
-| LAB04  | Rolling Updates             | Implementing zero-downtime updates in Swarm                |
-| LAB05  | High Availability           | Designing highly available Swarm clusters                  |
-
-### Docker Networking Track
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB02  | Overlay Networks            | Multi-host networking for container clusters               |
-| LAB03  | Service Discovery           | Container discovery and DNS in Docker environments         |
-| LAB04  | Network Security            | Implementing network isolation and security                |
-
-### Docker Registry Track
-| Lab    | Title                       | Description                                                |
-|--------|-----------------------------|------------------------------------------------------------|
-| LAB02  | Authentication & Authorization | Securing registry access with authentication            |
-| LAB03  | Registry Mirroring          | Setting up caching proxies for remote registries           |
-| LAB04  | Registry Automation         | Automating image builds and registry management            |
+| Lab    | Title                             |
+|--------|-----------------------------------|
+| LAB01  | Service-Communication             |
+| LAB02  | Volumes-And-Persistence           |
+| LAB03  | Environment-Configuration         |
+| LAB04  | Secrets-Management                |
+| LAB05  | Scaling-Services                  |
+| LAB06  | Production-Ready-Deployments       |
+| LAB07  | Private-Registry-Integration      |
+| LAB08  | Monitoring-And-Logging            |
+| LAB09  | Multi-Stage-Builds                 |
+| LAB10  | Compose-Healthchecks-And-Resilience |
 
 ---
 
-## 🎯 Learning Path
+## 📚 Docker Swarm Track (10 Labs)
 
-The recommended progression through these labs is:
-
-1. **Basics Track**: Establish a solid foundation in Docker fundamentals
-2. **Compose Track**: Learn to manage multi-container applications
-3. **Swarm Track**: Explore container orchestration at scale
-4. **Networking Track**: Master container networking concepts
-5. **Registry Track**: Deploy and manage private container registries
-
-Each lab builds on concepts from previous sections, creating a comprehensive learning experience.
-
----
-
-## 🚀 Prerequisites
-
-Before starting these labs, you should have:
-
-- Docker Engine installed (latest stable version)
-- Docker Compose installed
-- Basic command-line knowledge
-- Text editor of your choice
+| Lab    | Title                             |
+|--------|-----------------------------------|
+| LAB01  | Cluster-Deployment                |
+| LAB02  | Deploying-Services-And-Stacks      |
+| LAB03  | Secrets-Management-In-Swarm       |
+| LAB04  | Scaling-And-Updating-Services     |
+| LAB05  | Healthchecks-And-Service-Recovery |
+| LAB06  | Placement-Constraints-And-Strategies |
+| LAB07  | Node-Maintenance-And-Drain         |
+| LAB08  | High-Availability-And-Failover    |
+| LAB09  | Overlay-Networks-In-Swarm         |
+| LAB10  | Troubleshooting-Swarm-Deployments |
 
 ---
 
-## 🎉 Ready to Begin?
+## 📚 Docker Networking Track (10 Labs)
 
-Select a track based on your experience level and start with the first lab in that track:
+| Lab    | Title                             |
+|--------|-----------------------------------|
+| LAB01  | Container-Networking-Basics       |
+| LAB02  | Overlay-Networks                  |
+| LAB03  | Service-Discovery-And-DNS         |
+| LAB04  | Custom-Bridge-Networks            |
+| LAB05  | Network-Security-And-Isolation    |
+| LAB06  | Port-Mapping-And-Publishing       |
+| LAB07  | Load-Balancing-Traffic             |
+| LAB08  | Advanced-Networking-Tools         |
+| LAB09  | Encrypted-Networks-VPN-Like        |
+| LAB10  | Debugging-Networking-Issues        |
 
-```bash
-# For beginners
-cd Basics/LAB01-GettingStarted
+---
 
-# For those familiar with Docker basics
-cd Compose/LAB01-ServiceCommunication
+## 📚 Docker Registry Track (10 Labs)
 
-# For advanced users
-cd Swarm/LAB01-ClusterDeployment
-```
+| Lab    | Title                             |
+|--------|-----------------------------------|
+| LAB01  | Private-Registry-Setup            |
+| LAB02  | Authentication-And-Authorization  |
+| LAB03  | SSL-And-TLS-Secured-Registry      |
+| LAB04  | Registry-Mirroring-And-Caching    |
+| LAB05  | Garbage-Collection-And-Cleanup    |
+| LAB06  | Webhook-Automation-For-Images     |
+| LAB07  | Image-Signing-And-Content-Trust   |
+| LAB08  | Vulnerability-Scanning-Images     |
+| LAB09  | Registry-Backup-And-Restore       |
+| LAB10  | Multi-Region-Registry-Deployment  |
 
-Happy containerizing!
+---
 
-> Each track builds on fundamental concepts and gradually introduces more complex scenarios and best practices. 
+# 🚀 Learning Path
+
+1. **Docker Basics** → Core container skills
+2. **Docker Compose** → Multi-container orchestration
+3. **Docker Swarm** → Cluster-wide container orchestration
+4. **Docker Networking** → Master container-to-container communication
+5. **Docker Registry** → Manage secure, scalable private registries
+
+Each track builds progressively and prepares you for professional containerized application development and deployment.
+
+---
+
+✅ Happy containerizing and orchestrating! 🐳🚀
+

@@ -1,0 +1,28 @@
+FROM python:3.9
+
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Set development environment variables
+ENV ENVIRONMENT=development
+ENV DEBUG=True
+ENV LOG_LEVEL=DEBUG
+
+# Expose development port
+EXPOSE 8080
+
+# Start the development server with hot reloading
+CMD ["python", "app.py"]
+
+# TODO: This development Dockerfile works, but could be improved:
+# TODO: Consider adding development-only packages for debugging
+# TODO: Consider using volume mounts instead of copying code
+# TODO: Enable hot reloading for faster development
+# TODO: Add a non-root user for better security practices
+# TODO: Use a more efficient way to handle development vs. production settings 
